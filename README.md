@@ -8,6 +8,8 @@ Upon research, I noticed that creating hundreds of separate divs to make a whole
 
 In this case I decided to use <canvas></canvas> which allowed a whole board to be used, alongside coordinates.
 
+I had decided already that the grid would be: 600px by 300px so a 10 x 20 grid with 30px being the length of a single block.
+
  const canvas = document.querySelector('#grid')
   const ctx = canvas.getContext('2d')
   const w = ctx.canvas.width
@@ -35,7 +37,7 @@ function drawGrid(ctx, w, h, block) {
 First I created a canvas tag in HTML, then linked it to the JS.
 I had some issues with drawing a grid;
 
-First it was not drawing the right amount of lines, upon research i found out that canvas has a set 300,150 scale that is difficult to change. If you change the size in CSS it will increase the contents to scale for the size which was unwanted. The only way I could work arouynd this was to try and reassign the height for ctx.canvas.height, then double the values when drawing the grid itself.
+First it was not drawing the right amount of lines, I found out that canvas has a set 300px,150px measurement that is difficult to change. If you change the size in CSS it will increase the contents to scale for the size which was unwanted. The only way I could work around this was to try and reassign the height for ctx.canvas.height, then double the values when drawing the grid itself.
 
 I did not change the width because the default width was already what I wanted it to be at.
 
@@ -54,3 +56,7 @@ function createTetro(x, y, color) {
 
 fillRect and fillStyle determine the block position and internal color.
 strokeRect and strokeStyle determine outline of the blocks.
+
+## Scrapped Everything previously
+
+So I hit a wall, restarted using Jacks example from lesson, I restructured his wack 'em all game to fit a tetris format and refactored the movement to fit movement of the blocks.

@@ -23,11 +23,12 @@ function init() {
       }
     }
     ctx.stroke()
+
   }
   drawGrid(ctx, w, h, block)
 
-
   // tetromino system
+
   function createTetro(x, y, color) {
     ctx.fillStyle = 'green'
     ctx.fillRect(3 * block, 2 * block, block, block)
@@ -35,6 +36,10 @@ function init() {
     ctx.strokeRect(3 * block, 2 * block, block, block)
   }
 
+
+
+  }
+  
   
 
 
