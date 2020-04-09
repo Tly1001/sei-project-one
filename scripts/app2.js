@@ -11,6 +11,7 @@ function init() {
   // game variables
   let tetrominoPos = []
   let color
+  let state = 0
 
   function createGrid() {
     for (let i = 0; i < cellCount; i++) {
@@ -26,8 +27,13 @@ function init() {
   createGrid()
   // create tetrominos
   const jTet = {
-    starting: [35, 34, 25, 15],
-    color: 'blue'
+    starting: [34, 35, 25, 15],
+    color: 'blue',
+    rotate: [
+      [-20, -11, 0, 11],
+      [2, -9, 0, 9]
+    ],
+    state: 0
   }
 
   function changeColor(place, color) {
@@ -59,61 +65,66 @@ function init() {
         })
         return
       }
-    }, 300)
+    }, 900)
   }
-  // const dropId = setInterval(() => {
-
-  //   if (pos + 10 > 239) {
-  //     clearInterval(dropId)
-  //     tetrominoPos.forEach(pos => {
-  //       cells[pos].style.backgroundColor = 'black'
-  //     })
-  //     return
-  //   }
-  // }, 300)
-
-
-
 
   createTetrominos(jTet)
 
-  // function handleKeyUp(event) {
+  function handleKeyUp(event) {
+    // removes old class in old position
 
-  //   // removes old class in old position
-  //   cells[tetrominoPos].classList.remove('pika')
+    const x = tetrominoPos[0] % width
+    const y = Math.floor(tetrominoPos[0] / height)
 
-  //   const x = tetrominoPos % width
-  //   const y = Math.floor(tetrominoPos / width)
+    console.log(event.keyCode)
+    switch (event.keyCode) {
+      // right
+      case 39:
+        if (x < width - 1)
+          tetrominoPos = tetrominoPos.map(pos => {
+            changeColor(pos, 'white')
+            changeColor(pos++, color)
+            return pos++
+          })
+        break
+        // left
+      case 37:
+        if (x > 0)
+          tetrominoPos = tetrominoPos.map(pos => {
+            changeColor(pos, 'white')
+            changeColor(pos--, color)
+            return pos--
+          })
 
-  //   console.log(event.keyCode)
-  //   switch (event.keyCode) {
-  //     case 39:
-  //       if (x < width - 1)
-  //         tetrominoPos++
-  //       break
-  //     case 37:
-  //       if (x > 0)
-  //         tetrominoPos--
-  //       break
-  //     case 38:
-  //       if (y > 0)
-  //         tetrominoPos -= width
-  //       break
-  //     case 40:
-  //       if (y < width - 1)
-  //         tetrominoPos += width
-  //       break
-  //     default:
-  //       console.log('invalid key')
-  //   }
-  //   // adds class back at new position
-  //   cells[tetrominoPos].classList.add('pika')
-  // }
+        break
+        // up
+      case 38:
+        if (y > 0)
+          tetrominoPos = tetrominoPos.map(pos => {
+            changeColor(pos, 'white')
+            changeColor(pos + jTet.rotate[state][tetrominoPos.indexOf(pos)], color)
+            return pos + jTet.rotate[state][tetrominoPos.indexOf(pos)]
+          })
+        state < 3 ? state++ : state = 0
+        break
+        // down
+      case 40:
+        if (y < width - 1)
+          tetrominoPos = tetrominoPos.map(pos => {
+            changeColor(pos, 'white')
+            changeColor(pos + 10, color)
+            return pos + 10
+          })
+        break
+      default:
+        console.log('invalid key')
+    }
+  }
 
 
 
   // Event Listeners
-  // document.addEventListener('keyup', handleKeyUp)
+  document.addEventListener('keyup', handleKeyUp)
 
 }
 
