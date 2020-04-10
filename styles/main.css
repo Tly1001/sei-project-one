@@ -22,14 +22,14 @@ body {
   flex-wrap: wrap;
   height: 90%;
   justify-content: center;
-  width: 320px;
+  width: 360px;
 }
 
 .grid div {
   border: 1px solid lightgrey;
   flex-grow: 1;
-  height: 32px;
-  width: 32px;
+  height: 36px;
+  width: 36px;
 }
 
 .hidden-grid {

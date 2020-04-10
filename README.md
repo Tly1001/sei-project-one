@@ -2,6 +2,12 @@
 first project in General Assembly written with HTML and Javascript
 
 
+
+Bugs:
+- rotate kicks up one sometimes
+- pressing down at base stops new tet being created
+
+
 <!-- Grid system -->
 
 Upon research, I noticed that creating hundreds of separate divs to make a whole grid would present its own challenges in the long term, being math heavy for the tetrominos when it came to rotation.
