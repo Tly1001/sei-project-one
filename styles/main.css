@@ -37,8 +37,15 @@ body {
 }
 
 .occupied {
-  border: 2px solid blue;
+  border: 2px solid black;
+  background-color: blue;
 }
+
+.locked {
+  border: 2px solid black;
+  background-color: black;
+}
+
 
 /* .grid div.pika {
   background-image: url('../assets/pika-sprite.png');

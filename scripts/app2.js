@@ -21,17 +21,18 @@ function init() {
       cells.push(cell)
       i < 40 ? cell.classList.add('hidden-grid') : null
     }
-
   }
-
   createGrid()
+
   // create tetrominos
   const jTet = {
     starting: [34, 35, 25, 15],
     color: 'blue',
     rotate: [
       [-20, -11, 0, 11],
-      [2, -9, 0, 9]
+      [2, -9, 0, 9],
+      [20, 11, 0, -11],
+      [-2, 9, 0, -9]
     ],
     state: 0
   }
@@ -40,10 +41,25 @@ function init() {
     cells[place].style.backgroundColor = color
   }
 
+  function addClass(pos) {
+    cells[pos].classList.add('occupied')
+  }
+
+  function removeClass(pos) {
+    cells[pos].classList.remove('occupied')
+  }
+
+  function lockClass(pos) {
+    cells[pos].classList.add('locked')
+  }
+
   function createTetrominos(tet) {
     tet.starting.forEach(place => {
-      changeColor(place, tet.color)
+      // changeColor(place, tet.color)
       tetrominoPos.push(place)
+      console.log(cells[place])
+      addClass(place)
+      console.log(cells[place])
       color = tet.color
     })
     drop()
@@ -54,36 +70,39 @@ function init() {
     const dropId = setInterval(() => {
       if (tetrominoPos[0] + 10 < 239) {
         tetrominoPos = tetrominoPos.map(pos => {
-          changeColor(pos, 'white')
-          changeColor(pos + 10, color)
+          
+          // changeColor(pos, 'white')
+          removeClass(pos)
+          // changeColor(pos + 10, color)
+          addClass(pos + 10)
           return pos + 10
         })
       } else {
         tetrominoPos.forEach(pos => {
-          changeColor(pos, 'black')
+          // changeColor(pos, 'black')
+          lockClass(pos)
           clearInterval(dropId)
         })
         return
       }
-    }, 900)
+    }, 400)
   }
 
   createTetrominos(jTet)
 
   function handleKeyUp(event) {
     // removes old class in old position
-
     const x = tetrominoPos[0] % width
     const y = Math.floor(tetrominoPos[0] / height)
-
-    console.log(event.keyCode)
     switch (event.keyCode) {
       // right
       case 39:
         if (x < width - 1)
           tetrominoPos = tetrominoPos.map(pos => {
-            changeColor(pos, 'white')
-            changeColor(pos++, color)
+            // changeColor(pos, 'white')
+            removeClass(pos)
+            // changeColor(pos++, color)
+            addClass(pos++)
             return pos++
           })
         break
@@ -91,20 +110,23 @@ function init() {
       case 37:
         if (x > 0)
           tetrominoPos = tetrominoPos.map(pos => {
-            changeColor(pos, 'white')
-            changeColor(pos--, color)
+            // changeColor(pos, 'white')
+            removeClass(pos)
+            // changeColor(pos--, color)
+            addClass(pos--)
             return pos--
           })
 
         break
-        // up
+        // up/rotate
       case 38:
-        if (y > 0)
-          tetrominoPos = tetrominoPos.map(pos => {
-            changeColor(pos, 'white')
-            changeColor(pos + jTet.rotate[state][tetrominoPos.indexOf(pos)], color)
-            return pos + jTet.rotate[state][tetrominoPos.indexOf(pos)]
-          })
+        tetrominoPos = tetrominoPos.map(pos => {
+          // changeColor(pos, 'white')
+          removeClass(pos)
+          // changeColor(pos + jTet.rotate[state][tetrominoPos.indexOf(pos)], color)
+          addClass(pos + jTet.rotate[state][tetrominoPos.indexOf(pos)])
+          return pos + jTet.rotate[state][tetrominoPos.indexOf(pos)]
+        })
         state < 3 ? state++ : state = 0
         break
         // down
