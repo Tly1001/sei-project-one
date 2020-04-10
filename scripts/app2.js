@@ -14,14 +14,18 @@ function init() {
   let state = 0
 
   function createGrid() {
-    for (let i = 0; i < cellCount; i++) {
-      const cell = document.createElement('div')
-      cell.textContent = i
-      grid.appendChild(cell)
-      cells.push(cell)
-      i < 40 ? cell.classList.add('hidden-grid') : null
+    for (let row = 0; row < height; row++) {
+      for (let col = 0; col < width; col++) {
+        const cell = document.createElement('div')
+        cell.dataset.row = row
+        cell.dataset.col = col
+        grid.appendChild(cell)
+        cells.push(cell)
+        cell.dataset.row < 4 ? cell.classList.add('hidden-grid') : null
+      }
     }
   }
+
   createGrid()
 
   // create tetrominos
@@ -40,6 +44,7 @@ function init() {
   function changeColor(place, color) {
     cells[place].style.backgroundColor = color
   }
+
 
   function addClass(pos) {
     cells[pos].classList.add('occupied')
@@ -70,9 +75,11 @@ function init() {
     const dropId = setInterval(() => {
       if (tetrominoPos[0] + 10 < 239) {
         tetrominoPos = tetrominoPos.map(pos => {
-          
+
           // changeColor(pos, 'white')
+          // if ((cells[pos - 10].classList.constains('occupied'))) {} doesn't work
           removeClass(pos)
+
           // changeColor(pos + 10, color)
           addClass(pos + 10)
           return pos + 10
