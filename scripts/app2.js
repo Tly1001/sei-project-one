@@ -415,7 +415,7 @@ function init() {
         //replace
           replaceAll()
         }
-
+        
       } else {
         blockLanded()
       }
@@ -427,7 +427,7 @@ function init() {
     state = 0
     tetrominoPos.map(pos => lockClass(pos))
     createTetrominos()
-    setTimeout(lineCheck, 400)
+    lineCheck()
   }
 
 
@@ -443,7 +443,10 @@ function init() {
     // console.log(index)gives one number eg 19 at base
 
     // find all locked squares
-    cells[index].map(sq => clearClass(sq))
+    cells[index].map(sq => {
+      sq.classList.remove('occupied')
+      sq.classList.remove('locked')
+    })
 
     // allLockedSquares returns 20 arrays, only filling with blocked squares, some are empty
     const allLockedSquares = cells.map(row => {
