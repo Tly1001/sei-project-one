@@ -12,8 +12,10 @@ function init() {
   }
 
   // game variables
+  let tet
   let tetrominoPos = []
   let state = 0
+  let dropId
 
   function createGrid() {
     for (let row = 0; row < height; row++) {
@@ -25,7 +27,7 @@ function init() {
         grid.appendChild(cell)
         cells[row].push(cell)
 
-        // console.log(cells[row])
+        // console.log(cells) gives 10 arrays(rows) each with 10 items (cols)
 
         cell.dataset.row < 4 ? cell.classList.add('hidden-grid') : null
       }
@@ -36,273 +38,315 @@ function init() {
 
   // create tetrominos
 
-  const shapes =
-  [[{
-    letter: 'S',
-    starting: [{
-      row: 2,
-      col: 5
-    }, {
-      row: 2,
-      col: 4
-    }, {
-      row: 3,
-      col: 4
-    }, {
-      row: 3,
-      col: 3
-    }],
-    color: 'yellow',
-    rotate: [
-      [
-        [1, -1],
-        [0, 0],
-        [-1, -1],
-        [-2, 0]
-      ],
-      [
-        [-1, -1],
-        [0, 0],
-        [-1, 1],
-        [0, 2]
-      ],[
-        [-1, 1],
-        [0, 0],
-        [1, 1],
-        [2, 0]
-      ],[
-        [1, 1],
-        [0, 0],
-        [1, -1],
-        [0, -2]
+  const shapes = [
+    [{
+      letter: 'S',
+      starting: [{
+        row: 2,
+        col: 5
+      }, {
+        row: 2,
+        col: 4
+      }, {
+        row: 3,
+        col: 4
+      }, {
+        row: 3,
+        col: 3
+      }],
+      color: 'yellow',
+      rotate: [
+        [
+          [1, -1],
+          [0, 0],
+          [-1, -1],
+          [-2, 0]
+        ],
+        [
+          [-1, -1],
+          [0, 0],
+          [-1, 1],
+          [0, 2]
+        ],
+        [
+          [-1, 1],
+          [0, 0],
+          [1, 1],
+          [2, 0]
+        ],
+        [
+          [1, 1],
+          [0, 0],
+          [1, -1],
+          [0, -2]
+        ]
       ]
-    ]
-  }],
-
-  [{
-    letter: 'I',
-    starting: [{
-      row: 0,
-      col: 4
-    }, {
-      row: 1,
-      col: 4
-    }, {
-      row: 2,
-      col: 4
-    }, {
-      row: 3,
-      col: 4
     }],
-    color: 'yellow',
-    rotate: [
-      [
-        [1, 2],
-        [0, 1],
-        [-1, 0],
-        [-2, -1]
-      ],
-      [
-        [2, -2],
-        [1, -1],
-        [0, 0],
-        [-1, 1]
-      ],[
-        [-2, -1],
-        [-1, 0],
-        [0, 1],
-        [1, 2]
-      ],[
-        [-1, 1],
-        [0, 0],
-        [1, -1],
-        [2, -2]
-      ]
-    ]
-  }],
 
-  [{
-    letter: 'O',
-    starting: [{
-      row: 2,
-      col: 4
-    }, {
-      row: 2,
-      col: 5
-    }, {
-      row: 3,
-      col: 4
-    }, {
-      row: 3,
-      col: 5
+    [{
+      letter: 'I',
+      starting: [{
+        row: 0,
+        col: 4
+      }, {
+        row: 1,
+        col: 4
+      }, {
+        row: 2,
+        col: 4
+      }, {
+        row: 3,
+        col: 4
+      }],
+      color: 'yellow',
+      rotate: [
+        [
+          [1, 2],
+          [0, 1],
+          [-1, 0],
+          [-2, -1]
+        ],
+        [
+          [2, -2],
+          [1, -1],
+          [0, 0],
+          [-1, 1]
+        ],
+        [
+          [-2, -1],
+          [-1, 0],
+          [0, 1],
+          [1, 2]
+        ],
+        [
+          [-1, 1],
+          [0, 0],
+          [1, -1],
+          [2, -2]
+        ]
+      ]
     }],
-    color: 'yellow',
-    rotate: [
-      [
-        [0, 0],
-        [0, 0],
-        [0, 0],
-        [0, 0]
-      ],
-      [
-        [0, 0],
-        [0, 0],
-        [0, 0],
-        [0, 0]
-      ],[
-        [0, 0],
-        [0, 0],
-        [0, 0],
-        [0, 0]
-      ],[
-        [0, 0],
-        [0, 0],
-        [0, 0],
-        [0, 0]
-      ]
-    ]
-  }],
 
-  [{
-    letter: 'L',
-    starting: [{
-      row: 1,
-      col: 4
-    }, {
-      row: 2,
-      col: 4
-    }, {
-      row: 3,
-      col: 4
-    }, {
-      row: 3,
-      col: 5
+    [{
+      letter: 'O',
+      starting: [{
+        row: 2,
+        col: 4
+      }, {
+        row: 2,
+        col: 5
+      }, {
+        row: 3,
+        col: 4
+      }, {
+        row: 3,
+        col: 5
+      }],
+      color: 'yellow',
+      rotate: [
+        [
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0]
+        ],
+        [
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0]
+        ],
+        [
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0]
+        ],
+        [
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0]
+        ]
+      ]
     }],
-    color: 'green',
-    rotate: [
-      [
-        [1, 1],
-        [0, 0],
-        [-1, -1],
-        [0, -2]
-      ],
-      [
-        [1, -1],
-        [0, 0],
-        [-1, 1],
-        [-2, 0]
-      ],
-      [
-        [-1, -1],
-        [0, 0],
-        [1, 1],
-        [0, 2]
-      ],
-      [
-        [-1, 1],
-        [0, 0],
-        [1, -1],
-        [2, 0]
-      ]
-    ]
-  }],
 
-  [{
-    letter: 'Z',
-    starting: [{
-      row: 2,
-      col: 4
-    }, {
-      row: 2,
-      col: 5
-    }, {
-      row: 3,
-      col: 5
-    }, {
-      row: 3,
-      col: 6
+    [{
+      letter: 'L',
+      starting: [{
+        row: 1,
+        col: 4
+      }, {
+        row: 2,
+        col: 4
+      }, {
+        row: 3,
+        col: 4
+      }, {
+        row: 3,
+        col: 5
+      }],
+      color: 'green',
+      rotate: [
+        [
+          [1, 1],
+          [0, 0],
+          [-1, -1],
+          [0, -2]
+        ],
+        [
+          [1, -1],
+          [0, 0],
+          [-1, 1],
+          [-2, 0]
+        ],
+        [
+          [-1, -1],
+          [0, 0],
+          [1, 1],
+          [0, 2]
+        ],
+        [
+          [-1, 1],
+          [0, 0],
+          [1, -1],
+          [2, 0]
+        ]
+      ]
     }],
-    color: 'red',
-    rotate: [
-      [
-        [-1, 1],
-        [0, 0],
-        [-1, -1],
-        [0, -2]
-      ],
-      [
-        [1, 1],
-        [0, 0],
-        [-1, 1],
-        [-2, 0]
-      ],
-      [
-        [1, -1],
-        [0, 0],
-        [1, 1],
-        [0, 2]
-      ],
-      [
-        [-1, -1],
-        [0, 0],
-        [1, -1],
-        [2, 0]
+    [{
+      letter: 'T',
+      starting: [{
+        row: 2,
+        col: 4
+      }, {
+        row: 2,
+        col: 5
+      }, {
+        row: 2,
+        col: 6
+      }, {
+        row: 3,
+        col: 5
+      }],
+      color: 'brown',
+      rotate: [
+        [
+          [-1, 1],
+          [0, 0],
+          [1, -1],
+          [-1, -1]
+        ],
+        [
+          [1, 1],
+          [0, 0],
+          [-1, -1],
+          [-1, 1]
+        ],
+        [
+          [1, -1],
+          [0, 0],
+          [-1, 1],
+          [1, 1]
+        ],
+        [
+          [-1, -1],
+          [0, 0],
+          [1, 1],
+          [1, -1]
+        ]
       ]
-    ]
-  }],
-
-  [{
-    letter: 'J',
-    starting: [{
-      row: 3,
-      col: 4
-    }, {
-      row: 3,
-      col: 5
-    }, {
-      row: 2,
-      col: 5
-    }, {
-      row: 1,
-      col: 5
     }],
-    color: 'blue',
-    rotate: [
-      [
-        [-2, 0],
-        [-1, -1],
-        [0, 0],
-        [1, 1]
-      ],
-      [
-        [0, 2],
-        [-1, 1],
-        [0, 0],
-        [1, -1]
-      ],
-      [
-        [2, 0],
-        [1, 1],
-        [0, 0],
-        [-1, -1]
-      ],
-      [
-        [0, -2],
-        [1, -1],
-        [0, 0],
-        [-1, 1]
+    [{
+      letter: 'Z',
+      starting: [{
+        row: 2,
+        col: 4
+      }, {
+        row: 2,
+        col: 5
+      }, {
+        row: 3,
+        col: 5
+      }, {
+        row: 3,
+        col: 6
+      }],
+      color: 'red',
+      rotate: [
+        [
+          [-1, 1],
+          [0, 0],
+          [-1, -1],
+          [0, -2]
+        ],
+        [
+          [1, 1],
+          [0, 0],
+          [-1, 1],
+          [-2, 0]
+        ],
+        [
+          [1, -1],
+          [0, 0],
+          [1, 1],
+          [0, 2]
+        ],
+        [
+          [-1, -1],
+          [0, 0],
+          [1, -1],
+          [2, 0]
+        ]
       ]
-    ]
-  }]]
-  
-  function getRandomLetter() {
-    const num = Math.floor((Math.random() * 7))
-    return shapes[num]
-  }
+    }],
 
-  // function changeColor(place, color) {
-  //   cells[place].style.backgroundColor = color
-  // }
+    [{
+      letter: 'J',
+      starting: [{
+        row: 3,
+        col: 4
+      }, {
+        row: 3,
+        col: 5
+      }, {
+        row: 2,
+        col: 5
+      }, {
+        row: 1,
+        col: 5
+      }],
+      color: 'blue',
+      rotate: [
+        [
+          [-2, 0],
+          [-1, -1],
+          [0, 0],
+          [1, 1]
+        ],
+        [
+          [0, 2],
+          [-1, 1],
+          [0, 0],
+          [1, -1]
+        ],
+        [
+          [2, 0],
+          [1, 1],
+          [0, 0],
+          [-1, -1]
+        ],
+        [
+          [0, -2],
+          [1, -1],
+          [0, 0],
+          [-1, 1]
+        ]
+      ]
+    }]
+  ]
+
+  // Game functions
 
   function addClass(pos) {
     // console.log(pos) returns row:num col:num
@@ -317,20 +361,30 @@ function init() {
     cells[pos.row][pos.col].classList.add('locked')
   }
 
+  function clearClass(pos) {
+    pos.className = ''
+  }
+
   // removes old class in old position
   function removeAll() {
-    tetrominoPos.forEach(pos => removeClass(pos))
+    tetrominoPos.map(pos => removeClass(pos))
   }
 
   // places tet in new position
   function replaceAll() {
-    tetrominoPos.forEach(pos => addClass(pos))
+    tetrominoPos.map(pos => addClass(pos))
+  }
+
+  function getRandomLetter() {
+    const num = Math.floor((Math.random() * 7))
+    return shapes[num]
   }
 
   function createTetrominos() {
-    const tet = getRandomLetter()
+    tet = getRandomLetter()
+    //to clear of any content
     tetrominoPos = []
-    
+    //start new tet
     tet[0].starting.forEach(place => {
       // console.log(place) returns [3,4]
       tetrominoPos.push(place)
@@ -341,71 +395,129 @@ function init() {
   }
 
   // drop function
+
   function drop() {
-    const dropId = setInterval(() => {
+
+    dropId = setInterval(() => {
       // console.log(tetrominoPos) returns 4 arrays
+
       if (tetrominoPos.every(val => val.row < height - 1)) {
         //remove
         removeAll()
         //change
-        tetrominoPos.forEach(pos => pos.row++)
+        tetrominoPos.map(pos => pos.row++)
+
+        // if next square is locked, stop
+        if (tetrominoPos.some(val => cells[val.row][val.col].classList.contains('locked'))) {
+          tetrominoPos.map(pos => pos.row--)
+          blockLanded()
+        } else {
         //replace
-        replaceAll()
+          replaceAll()
+        }
+
       } else {
-        tetrominoPos.forEach(pos => {
-          lockClass(pos)
-        })
-        state = 0
-        createTetrominos()
-        clearInterval(dropId)
-        return
+        blockLanded()
       }
     }, 300)
+  }
+
+  function blockLanded() {
+    clearInterval(dropId)
+    state = 0
+    tetrominoPos.map(pos => lockClass(pos))
+    createTetrominos()
+    setTimeout(lineCheck, 400)
   }
 
 
   // Line break
 
+  function lineCheck() {
+    cells.forEach((row, index) => {
+      !row.every(sq => sq.classList.contains('locked')) ? null : lineBreak(index)
+    })
+  }
 
-  // search each array rows for all locked
-  // if true, target that row
-  // turn line to vacant
-  // drop all locked squares above down one line
+  function lineBreak(index) {
+    // console.log(index)gives one number eg 19 at base
+
+    // find all locked squares
+    cells[index].map(sq => clearClass(sq))
+
+    // allLockedSquares returns 20 arrays, only filling with blocked squares, some are empty
+    const allLockedSquares = cells.map(row => {
+      return row.filter(sq => sq.classList.contains('locked'))
+    })
+
+    // allBlocked gives only the arrays 
+    const allBlocked = allLockedSquares.filter(row => row.length > 0)
+
+    //remove
+    allLockedSquares.map(sq => clearClass(sq))
+    //change and replace
 
 
-  // function lineBreak() {
-  //   cells.forEach(row => {
-  //     row.find(sq => sq.classList.contains('occupied'))
-  //   })
-  // }
+    lineDrop(allBlocked, index)
+  }
+
+  function lineDrop(lockedSqs, brokenLine) {
+
+    // function shuffleDown() {
+    //   lockedSqs.map(pos => pos.row++)
+    // }
+
+    console.log(lockedSqs.find(lockedSqs))
+
+    // lockedSqs.map(sq => {
+    // console.log(sq)
+    // (!sqDown.classList.contains('locked') || )
+
+    // no need till second line is cleared
+    // if (!sq.row + 1 > brokenLine) {
+    //   return sq.row++
+    // }
+    // sq.row++
+    // console.log(sq)
+      
+    // })
+    // lockedSqs.map(sq => lockClass(sq))
+  }
 
   // Key movement
   function handleKeyUp(event) {
 
+    
 
     switch (event.keyCode) {
+      
       // right
       case 39:
         // unrespond state
         if (!tetrominoPos.every(val => val.col < 9)) {
           return
-        } else {
-          //remove
-          removeAll()
-          //change
-          tetrominoPos.forEach(pos => pos.col++)
-          //replace
+        }
+        removeAll()
+        tetrominoPos.map(pos => pos.col++)
+        if (tetrominoPos.some(val => cells[val.row][val.col].classList.contains('locked'))) {
+          tetrominoPos.map(pos => pos.col--)
           replaceAll()
+        } else {
+          replaceAll() 
         }
         break
         // left
       case 37:
         if (!tetrominoPos.every(val => val.col > 0)) {
           return
-        } else {
-          removeAll()
-          tetrominoPos.forEach(pos => pos.col--)
+        } 
+        removeAll()
+        tetrominoPos.map(pos => pos.col--)
+        if (tetrominoPos.some(val => cells[val.row][val.col].classList.contains('locked'))) {
+          tetrominoPos.map(pos => pos.col++)
           replaceAll()
+        } else {
+          replaceAll() 
         }
         break
         // up/rotate
@@ -414,23 +526,31 @@ function init() {
         if (!tetrominoPos.every(val => val.row < height - 1)) {
           for (let i = 0; i <= 3; i++) {
             // console.log(jTet.rotate[state]) gives 4 arrays, each with 4 arrays nested within them
-            tetrominoPos[i].row += sTet.rotate[state][i][0]
-            sTet.rotate[state][i][1]
-            tetrominoPos[i].col += sTet.rotate[state][i][1]
+            tetrominoPos[i].row += tet[0].rotate[state][i][0]
+            tet[0].rotate[state][i][1]
+            tetrominoPos[i].col += tet[0].rotate[state][i][1]
+          }
+          // base wall or blocked check
+          if (!tetrominoPos.every(val => val.row < height - 1) || tetrominoPos.some(val => cells[val.row][val.col].classList.contains('locked'))) {
+            tetrominoPos.map(pos => pos.row -= 2)
           }
           replaceAll()
-
           state < 3 ? state++ : state = 0
-
-          tetrominoPos.forEach(pos => {
-            lockClass(pos)
-          })
+          blockLanded()
         } else {
           for (let i = 0; i <= 3; i++) {
-            tetrominoPos[i].row += sTet.rotate[state][i][0]
-            sTet.rotate[state][i][1]
-            tetrominoPos[i].col += sTet.rotate[state][i][1]
+            tetrominoPos[i].row += tet[0].rotate[state][i][0]
+            tet[0].rotate[state][i][1]
+            tetrominoPos[i].col += tet[0].rotate[state][i][1]
           }
+          // right wall
+          if (!tetrominoPos.every( val => val.col < 9)) {
+            tetrominoPos.map(pos => pos.col--)
+          }
+          // left wall
+          if (!tetrominoPos.every(val => val.col > 0)) {
+            tetrominoPos.map(pos => pos.col++)
+          }        
           replaceAll()
           state < 3 ? state++ : state = 0
         }
@@ -439,9 +559,13 @@ function init() {
       case 40:
         if (!tetrominoPos.every(val => val.row < height - 1)) {
           return
+        }
+        removeAll()
+        tetrominoPos.map(pos => pos.row++)
+        if (tetrominoPos.some(val => cells[val.row][val.col].classList.contains('locked'))) {
+          tetrominoPos.map(pos => pos.row--)
+          blockLanded()
         } else {
-          removeAll()
-          tetrominoPos.forEach(pos => pos.row++)
           replaceAll()
         }
         break

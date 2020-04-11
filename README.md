@@ -3,7 +3,21 @@ first project in General Assembly written with HTML and Javascript
 
 
 
+current: 
+trying to work stopping if square underneath is blocked
+
+to do:
+line clears but wont kick the other blocked squares down
+collision detection
+line clear
+next block
+score
+timer
+
+
+
 Bugs:
+
 - rotate kicks up one sometimes
 - pressing down at base stops new tet being created
 
