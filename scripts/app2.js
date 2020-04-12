@@ -436,10 +436,10 @@ function init() {
     // console.log(index)gives one number eg 19 at base
 
     // find all locked squares
-    cells[index].map(sq => {
-      sq.classList.remove('occupied')
-      sq.classList.remove('locked')
-    })
+    cells[index].map(sq => clearClass(sq))
+    //   sq.classList.remove('occupied')
+    //   sq.classList.remove('locked')
+    // })
     lineDrop(index)
   }
 
@@ -455,27 +455,22 @@ function init() {
     allLocked.forEach(sq => {
       if (parseInt(sq.dataset.row) < brokenLine) {
         lockedRows.push(JSON.parse(JSON.stringify(parseInt(sq.dataset.row))))
-      } else {
-        return
-      }
-    })
-    allLocked.forEach(sq => {
-      if (parseInt(sq.dataset.row) < brokenLine) {
         lockedCols.push(JSON.parse(JSON.stringify(parseInt(sq.dataset.col))))
       } else {
         return
       }
     })
-    // remove
 
-    for (let i = 0; i < lockedCols.length; i++) {
-      cells[lockedRows[i]][lockedCols[i]].classList.remove('locked')
-    }
+    // remove change and replace
+
+    setTimeout(function() {
+      for (let i = 0; i < lockedCols.length; i++) {
+        cells[lockedRows[i]][lockedCols[i]].classList.remove('locked')
+        cells[lockedRows[i] + 1][lockedCols[i]].classList.add('locked')
+      }
+    }, 800)
     
     // change and replace
-    for (let i = 0; i < lockedCols.length; i++) {
-      cells[lockedRows[i] + 1][lockedCols[i]].classList.add('locked')
-    }
   }
   
   // Key movement
