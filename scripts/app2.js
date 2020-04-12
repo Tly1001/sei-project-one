@@ -35,7 +35,9 @@ function init() {
   }
 
   createGrid()
-  
+  // console.log(cells[4][3].dataset)
+  // gives {row: "4", col: "3"}
+
   // create tetrominos
 
   const shapes = [
@@ -365,12 +367,10 @@ function init() {
     pos.className = ''
   }
 
-  // removes old class in old position
   function removeAll() {
     tetrominoPos.map(pos => removeClass(pos))
   }
 
-  // places tet in new position
   function replaceAll() {
     tetrominoPos.map(pos => addClass(pos))
   }
@@ -383,18 +383,18 @@ function init() {
   function createTetrominos() {
     //start new tet
     tet = getRandomLetter()
-    console.log(tet)
-    
+
     //to clear of any content
     tetrominoPos = []
-    
+    console.log(tet)
+
     tet[0].starting.forEach(place => {
       // console.log(place) returns [3,4]
       tetrominoPos.push(place)
       addClass(place)
     })
-    // console.log(tetrominoPos)
-    
+
+
     // tetDom.style.backgroundColor = tet[0].color
     drop()
     lineCheck()
@@ -406,25 +406,37 @@ function init() {
 
     dropId = setInterval(() => {
       // console.log(tetrominoPos) returns 4 arrays
+      //remove
+      removeAll()
+      //change
+      tetrominoPos.map(pos => pos.row++)
 
-      if (tetrominoPos.every(val => val.row < height - 1)) {
-        //remove
-        removeAll()
-        //change
-        tetrominoPos.map(pos => pos.row++)
-
-        // if next square is locked, stop
-        if (tetrominoPos.some(val => cells[val.row][val.col].classList.contains('locked'))) {
-          tetrominoPos.map(pos => pos.row--)
-          blockLanded()
-        } else {
-        //replace
-          replaceAll()
-        }
-        
-      } else {
+      if (!tetrominoPos.every(val => val.row < height) || tetrominoPos.some(val => cells[val.row][val.col].classList.contains('locked'))) {
+        tetrominoPos.map(pos => pos.row--)
         blockLanded()
+      } else {
+        replaceAll()
       }
+
+      // if (tetrominoPos.every(val => val.row < height - 1)) {
+      //   //remove
+      //   removeAll()
+      //   //change
+      //   tetrominoPos.map(pos => pos.row++)
+
+      //   // if next square is locked, stop
+      //   if (tetrominoPos.some(val => cells[val.row][val.col].classList.contains('locked'))) {
+      //     tetrominoPos.map(pos => pos.row--)
+      //     blockLanded()
+      //     return
+      //   } else {
+      //     //replace
+      //     replaceAll()
+      //   }
+
+      // } else {
+      //   blockLanded()
+      // }
     }, 300)
   }
 
@@ -487,7 +499,7 @@ function init() {
   // }
   // sq.row++
   // console.log(sq)
-      
+
   // })
   // lockedSqs.map(sq => lockClass(sq))
   // }
@@ -505,7 +517,7 @@ function init() {
     }
 
     switch (event.keyCode) {
-      
+
       // right
       case 39:
         // unrespond state
@@ -518,21 +530,21 @@ function init() {
           tetrominoPos.map(pos => pos.col--)
           replaceAll()
         } else {
-          replaceAll() 
+          replaceAll()
         }
         break
         // left
       case 37:
         if (!tetrominoPos.every(val => val.col > 0)) {
           return
-        } 
+        }
         removeAll()
         tetrominoPos.map(pos => pos.col--)
         if (tetrominoPos.some(val => cells[val.row][val.col].classList.contains('locked'))) {
           tetrominoPos.map(pos => pos.col++)
           replaceAll()
         } else {
-          replaceAll() 
+          replaceAll()
         }
         break
         // up/rotate
@@ -551,13 +563,13 @@ function init() {
         } else {
           rotate()
           // right wall
-          if (!tetrominoPos.every( val => val.col < 9)) {
+          if (!tetrominoPos.every(val => val.col < 9)) {
             tetrominoPos.map(pos => pos.col--)
           }
           // left wall
           if (!tetrominoPos.every(val => val.col > 0)) {
             tetrominoPos.map(pos => pos.col++)
-          }        
+          }
           replaceAll()
           state < 3 ? state++ : state = 0
         }
