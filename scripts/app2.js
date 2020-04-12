@@ -517,45 +517,46 @@ function init() {
         // up/rotate
       case 38:
         removeAll()
-
+        rotate()
         if (!tetrominoPos.every(val => val.row < height - 1)) {
           rotate()
-          // base wall or blocked check
+          // base wall
           if (!tetrominoPos.every(val => val.row < height - 1) || tetrominoPos.some(val => cells[val.row][val.col].classList.contains('locked'))) {
             
             tetrominoPos.map(pos => pos.row -= 1)
           }
-          replaceAll()
-          state < 3 ? state++ : state = 0
-          blockLanded()
-        } else {
-          rotate()
-          
-          // right wall
-          if (!tetrominoPos.every(val => val.col <= 9)) {
-            if (!tetrominoPos.some(val => val.col > 10)) {
-              tetrominoPos.map(pos => pos.col--)
-            } else {
-              tetrominoPos.map(pos => pos.col -= 2)
-            }
-          }
-
-          // left wall
-          if (!tetrominoPos.every(val => val.col >= 0)) {
-            if (!tetrominoPos.some(val => val.col < -1)) {
-              tetrominoPos.map(pos => pos.col++)
-            } else {
-              tetrominoPos.map(pos => pos.col += 2)
-            }
-          }
-          // if (!tetrominoPos.every(val => val.col > 0)) {
-          //   tetrominoPos.map(pos => pos.col++)
-          // }
-          console.log(tetrominoPos)
-          
-          replaceAll()
-          state < 3 ? state++ : state = 0
         }
+          
+        // right wall
+        if (!tetrominoPos.every(val => val.col <= 9)) {
+          if (!tetrominoPos.some(val => val.col > 10)) {
+            tetrominoPos.map(pos => pos.col--)
+          } else {
+            tetrominoPos.map(pos => pos.col -= 2)
+          }
+        }
+
+        // left wall
+        if (!tetrominoPos.every(val => val.col >= 0)) {
+          if (!tetrominoPos.some(val => val.col < -1)) {
+            tetrominoPos.map(pos => pos.col++)
+          } else {
+            tetrominoPos.map(pos => pos.col += 2)
+          }
+        }
+        
+        // block check
+        while (tetrominoPos.some(val => cells[val.row][val.col].classList.contains('locked'))) {
+          tetrominoPos.map(pos => pos.row -= 1)
+          if (tetrominoPos.some(val => val.col > 9)) {
+            tetrominoPos.map(pos => pos.col--)
+          }
+          if (tetrominoPos.some(val => val.col < 0)) {
+            tetrominoPos.map(pos => pos.col++)
+          }
+        }
+        replaceAll()
+        state < 3 ? state++ : state = 0
         break
         // down
       case 40:
