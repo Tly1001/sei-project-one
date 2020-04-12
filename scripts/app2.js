@@ -1,42 +1,79 @@
 function init() {
   // DOM elements
   const grid = document.querySelector('.grid')
+  const next = document.querySelector('.next')
+  const time = document.querySelector('#time')
+  const score = document.querySelector('.score')
+
   // const tetDom = document.querySelector('.occupied')
 
   // grid variables
   const width = 10
   const height = 20
   const cells = []
+  const nextShape = []
   for (let i = 0; i < height; i++) {
     cells.push([])
   }
 
   // game variables
+  const nextShapeCoordinates = [[7,8,10,11], [2,6,10,14], [6,7,10,11], [2,6,10,11],[3,6,7,11],[5,6,10,11],[3,7,10,11]]
+  let incomingShape
   let tet
   let tetrominoPos = []
   let state = 0
   let dropId
+  let timeId
 
+  
   function createGrid() {
     for (let row = 0; row < height; row++) {
       for (let col = 0; col < width; col++) {
         const cell = document.createElement('div')
         cell.dataset.row = row
         cell.dataset.col = col
-        cell.value = 0
         grid.appendChild(cell)
         cells[row].push(cell)
-
         // console.log(cells) gives 10 arrays(rows) each with 10 items (cols)
-
         cell.dataset.row < 4 ? cell.classList.add('hidden-grid') : null
       }
     }
   }
+  
+  function timeCount() {
+    timeId = setInterval(() => {
+      time.textContent = parseInt(time.textContent) + 1
+    }, 1000)
+  }
+
+  function nextShapeGrid() {
+    for (let i = 0; i < 16; i++) {
+      const cell = document.createElement('div')
+      next.appendChild(cell)
+      nextShape.push(cell)
+    }
+  }
+
+  function getRandomLetter() {
+    const num = Math.floor((Math.random() * 7))
+    generateNextShape(nextShapeCoordinates[num], num)
+  }
+
+  function generateNextShape(id, num) {
+    nextShape.map(sq => sq.classList.remove('.occupied'))
+    id.map(place => nextShape[place].classList.add('occupied'))
+    incomingShape = JSON.parse(JSON.stringify(num))
+  }
+
+  function gameOver() {
+    clearInterval(timeId)
+  }
 
   createGrid()
-  // console.log(cells[4][3].dataset)
-  // gives {row: "4", col: "3"}
+  nextShapeGrid()
+  
+  timeCount()
+
 
   // create tetrominos
 
@@ -375,10 +412,7 @@ function init() {
     tetrominoPos.map(pos => addClass(pos))
   }
   
-  function getRandomLetter() {
-    const num = Math.floor((Math.random() * 7))
-    return shapes[num]
-  }
+  
 
   function createTetrominos() {
     //start new tet
@@ -418,6 +452,7 @@ function init() {
   }
 
   function blockLanded() {
+    score.textContent = parseInt(score.textContent) + 160
     clearInterval(dropId)
     state = 0
     tetrominoPos.map(pos => lockClass(pos))
@@ -434,12 +469,9 @@ function init() {
 
   function lineBreak(index) {
     // console.log(index)gives one number eg 19 at base
-
+    score.textContent = parseInt(score.textContent) + 1500
     // find all locked squares
     cells[index].map(sq => clearClass(sq))
-    //   sq.classList.remove('occupied')
-    //   sq.classList.remove('locked')
-    // })
     lineDrop(index)
   }
 
@@ -461,8 +493,7 @@ function init() {
       }
     })
 
-    // remove change and replace
-
+    // remove change and replace locked squares
     setTimeout(function() {
       for (let i = 0; i < lockedCols.length; i++) {
         cells[lockedRows[i]][lockedCols[i]].classList.remove('locked')
@@ -470,7 +501,7 @@ function init() {
       }
     }, 800)
     
-    // change and replace
+    
   }
   
   // Key movement
@@ -564,6 +595,10 @@ function init() {
         console.log('invalid key')
     }
   }
+
+  
+
+
 
 
   createTetrominos()
