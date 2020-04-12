@@ -501,17 +501,24 @@ function init() {
       // right
       case 39:
         // unrespond state
-        if (!tetrominoPos.every(val => val.col < 9)) {
-          return
-        }
         removeAll()
         tetrominoPos.map(pos => pos.col++)
-        if (tetrominoPos.some(val => cells[val.row][val.col].classList.contains('locked'))) {
+        if (!tetrominoPos.every(val => val.col > 0) || tetrominoPos.some(val => cells[val.row][val.col].classList.contains('locked'))) {
           tetrominoPos.map(pos => pos.col--)
-          replaceAll()
-        } else {
-          replaceAll()
         }
+        replaceAll()
+
+        // if (!tetrominoPos.every(val => val.col < 9)) {
+        //   return
+        // }
+        // removeAll()
+        // tetrominoPos.map(pos => pos.col++)
+        // if (tetrominoPos.some(val => cells[val.row][val.col].classList.contains('locked'))) {
+        //   tetrominoPos.map(pos => pos.col--)
+        //   replaceAll()
+        // } else {
+        //   replaceAll()
+        // }
         break
         // left
       case 37:
@@ -521,31 +528,6 @@ function init() {
           tetrominoPos.map(pos => pos.col++)
         }
         replaceAll()
-
-        // This way still sometimes lets user overlap locked squares
-        // if (!tetrominoPos.every(val => val.col > 0) || tetrominoPos.some(val => cells[val.row - 1][val.col - 1].classList.contains('locked'))) {
-        //   return
-        // } else {
-        //   removeAll()
-        //   tetrominoPos.map(pos => pos.col--)
-        //   replaceAll()
-        // }
-
-
-
-
-
-        // if (!tetrominoPos.every(val => val.col > 0)) {
-        //   return
-        // }
-        // removeAll()
-        // tetrominoPos.map(pos => pos.col--)
-        // if (tetrominoPos.some(val => cells[val.row][val.col].classList.contains('locked'))) {
-        //   tetrominoPos.map(pos => pos.col++)
-        //   replaceAll()
-        // } else {
-        //   replaceAll()
-        // }
         break
         // up/rotate
       case 38:
