@@ -507,18 +507,6 @@ function init() {
           tetrominoPos.map(pos => pos.col--)
         }
         replaceAll()
-
-        // if (!tetrominoPos.every(val => val.col < 9)) {
-        //   return
-        // }
-        // removeAll()
-        // tetrominoPos.map(pos => pos.col++)
-        // if (tetrominoPos.some(val => cells[val.row][val.col].classList.contains('locked'))) {
-        //   tetrominoPos.map(pos => pos.col--)
-        //   replaceAll()
-        // } else {
-        //   replaceAll()
-        // }
         break
         // left
       case 37:
@@ -558,17 +546,25 @@ function init() {
         break
         // down
       case 40:
-        if (!tetrominoPos.every(val => val.row < height - 1)) {
-          return
-        }
         removeAll()
         tetrominoPos.map(pos => pos.row++)
-        if (tetrominoPos.some(val => cells[val.row][val.col].classList.contains('locked'))) {
+        if (!tetrominoPos.every(val => val.row < height - 1) || tetrominoPos.some(val => cells[val.row][val.col].classList.contains('locked'))) {
           tetrominoPos.map(pos => pos.row--)
           blockLanded()
-        } else {
-          replaceAll()
         }
+        replaceAll()
+
+        // if (!tetrominoPos.every(val => val.row < height - 1)) {
+        //   return
+        // }
+        // removeAll()
+        // tetrominoPos.map(pos => pos.row++)
+        // if (tetrominoPos.some(val => cells[val.row][val.col].classList.contains('locked'))) {
+        //   tetrominoPos.map(pos => pos.row--)
+        //   blockLanded()
+        // } else {
+        //   replaceAll()
+        // }
         break
       default:
         console.log('invalid key')
