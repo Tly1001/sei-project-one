@@ -383,13 +383,8 @@ function init() {
   function createTetrominos() {
     //start new tet
     tet = JSON.parse(JSON.stringify(getRandomLetter()))
-    console.log(tet)
-    
-
     //to clear of any content
     tetrominoPos = []
-    console.log(tet)
-
     tet[0].starting.forEach(place => {
       // console.log(place) returns [3,4]
       tetrominoPos.push(place)
@@ -419,7 +414,7 @@ function init() {
       } else {
         replaceAll()
       }
-    }, 300)
+    }, 20000)
   }
 
   function blockLanded() {
@@ -436,6 +431,47 @@ function init() {
     cells.forEach((row, index) => {
       !row.every(sq => sq.classList.contains('locked')) ? null : lineBreak(index)
     })
+
+    // remove
+    const allLocked = document.querySelectorAll('.locked')
+    // console.log(allLocked) gives array of the different squares with the class
+    
+    const lockedRows = []
+    const lockedCols = []
+    // allLocked.forEach(sq => {
+    //   const val = (typeof sq === 'object') ? Object.assign({}, sq) : null 
+    //   lockedCols.push(val)
+    // })
+
+    allLocked.forEach(sq => lockedRows.push(JSON.parse(JSON.stringify(parseInt(sq.dataset.row)))))
+    allLocked.forEach(sq => lockedCols.push(JSON.parse(JSON.stringify(parseInt(sq.dataset.col)))))
+    console.log(lockedCols)
+    
+    // change
+    const lockedColsClone = []
+    for (let i = 0; i < lockedCols; i++) {
+      lockedColsClone.push(JSON.parse(JSON.stringify(parseInt(lockedCols[i] + 1))))
+    }
+    console.log(lockedColsClone)
+    allLocked.forEach(sq => {
+      sq.classList.remove('locked')
+    })
+    // console.log(lockedRows[0]) gives 17
+    // const row = lockedRows[0] + 1
+    // console.log(row) gives 18
+
+    
+
+
+
+    // console.log(lockedRows)
+    // for (let i = 0; i < lockedRows - 1; i++) {
+    //   return lockedRows[i]++
+    // }
+    // lockedRows.forEach(row => row++)
+    // console.log(lockedRows)
+    
+    // replace
   }
 
   function lineBreak(index) {
@@ -447,28 +483,23 @@ function init() {
       sq.classList.remove('locked')
     })
 
+    
     // allLockedSquares returns 20 arrays, only filling with blocked squares, some are empty
-    const allLockedSquares = cells.map(row => {
-      return row.filter(sq => sq.classList.contains('locked'))
-    })
+    // const allLockedRows = cells.map(row => {
+    //   return row.filter(sq => sq.classList.contains('locked'))
+    // })
 
     // allBlocked gives only the arrays 
     // const allBlocked = allLockedSquares.filter(row => row.length > 0)
 
-    //remove
-    allLockedSquares.map(sq => clearClass(sq))
-    //change and replace
     lineDrop(allLockedSquares, index)
   }
 
   function lineDrop(lockedSqs, brokenLine) {
+
     lockedSqs.map(pos => pos.row > brokenLine ? null : pos.row++)
 
-    // console.log(lockedSqs.find(lockedSqs))
-
-    // lockedSqs.map(sq => {
-    // console.log(sq)
-    // (!sqDown.classList.contains('locked'))
+    console.log(lockedSqs.find(lockedSqs))
 
     // no need till second line is cleared
     // if (!sq.row + 1 > brokenLine) {
@@ -480,6 +511,8 @@ function init() {
     // })
     lockedSqs.map(sq => lockClass(sq))
   }
+  console.log()
+  
 
   // Key movement
   function handleKeyUp(event) {
