@@ -1,7 +1,7 @@
 function init() {
   // DOM elements
   const grid = document.querySelector('.grid')
-  const tetDom = document.querySelector('.occupied')
+  // const tetDom = document.querySelector('.occupied')
 
   // grid variables
   const width = 10
@@ -417,26 +417,6 @@ function init() {
       } else {
         replaceAll()
       }
-
-      // if (tetrominoPos.every(val => val.row < height - 1)) {
-      //   //remove
-      //   removeAll()
-      //   //change
-      //   tetrominoPos.map(pos => pos.row++)
-
-      //   // if next square is locked, stop
-      //   if (tetrominoPos.some(val => cells[val.row][val.col].classList.contains('locked'))) {
-      //     tetrominoPos.map(pos => pos.row--)
-      //     blockLanded()
-      //     return
-      //   } else {
-      //     //replace
-      //     replaceAll()
-      //   }
-
-      // } else {
-      //   blockLanded()
-      // }
     }, 300)
   }
 
@@ -471,7 +451,7 @@ function init() {
     })
 
     // allBlocked gives only the arrays 
-    const allBlocked = allLockedSquares.filter(row => row.length > 0)
+    // const allBlocked = allLockedSquares.filter(row => row.length > 0)
 
     //remove
     allLockedSquares.map(sq => clearClass(sq))
@@ -535,17 +515,37 @@ function init() {
         break
         // left
       case 37:
-        if (!tetrominoPos.every(val => val.col > 0)) {
-          return
-        }
         removeAll()
         tetrominoPos.map(pos => pos.col--)
-        if (tetrominoPos.some(val => cells[val.row][val.col].classList.contains('locked'))) {
+        if (!tetrominoPos.every(val => val.col > 0) || tetrominoPos.some(val => cells[val.row][val.col].classList.contains('locked'))) {
           tetrominoPos.map(pos => pos.col++)
-          replaceAll()
-        } else {
-          replaceAll()
         }
+        replaceAll()
+
+        // This way still sometimes lets user overlap locked squares
+        // if (!tetrominoPos.every(val => val.col > 0) || tetrominoPos.some(val => cells[val.row - 1][val.col - 1].classList.contains('locked'))) {
+        //   return
+        // } else {
+        //   removeAll()
+        //   tetrominoPos.map(pos => pos.col--)
+        //   replaceAll()
+        // }
+
+
+
+
+
+        // if (!tetrominoPos.every(val => val.col > 0)) {
+        //   return
+        // }
+        // removeAll()
+        // tetrominoPos.map(pos => pos.col--)
+        // if (tetrominoPos.some(val => cells[val.row][val.col].classList.contains('locked'))) {
+        //   tetrominoPos.map(pos => pos.col++)
+        //   replaceAll()
+        // } else {
+        //   replaceAll()
+        // }
         break
         // up/rotate
       case 38:
