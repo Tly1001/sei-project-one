@@ -35,7 +35,7 @@ function init() {
   }
 
   createGrid()
-
+  
   // create tetrominos
 
   const shapes = [
@@ -381,17 +381,23 @@ function init() {
   }
 
   function createTetrominos() {
+    //start new tet
     tet = getRandomLetter()
+    console.log(tet)
+    
     //to clear of any content
     tetrominoPos = []
-    //start new tet
+    
     tet[0].starting.forEach(place => {
       // console.log(place) returns [3,4]
       tetrominoPos.push(place)
       addClass(place)
     })
+    // console.log(tetrominoPos)
+    
     // tetDom.style.backgroundColor = tet[0].color
     drop()
+    lineCheck()
   }
 
   // drop function
@@ -427,7 +433,6 @@ function init() {
     state = 0
     tetrominoPos.map(pos => lockClass(pos))
     createTetrominos()
-    lineCheck()
   }
 
 
@@ -461,36 +466,43 @@ function init() {
     //change and replace
 
 
-    lineDrop(allBlocked, index)
+    // lineDrop(allBlocked, index)
   }
 
-  function lineDrop(lockedSqs, brokenLine) {
+  // function lineDrop(lockedSqs, brokenLine) {
 
-    // function shuffleDown() {
-    //   lockedSqs.map(pos => pos.row++)
-    // }
+  // function shuffleDown() {
+  //   lockedSqs.map(pos => pos.row++)
+  // }
 
-    console.log(lockedSqs.find(lockedSqs))
+  // console.log(lockedSqs.find(lockedSqs))
 
-    // lockedSqs.map(sq => {
-    // console.log(sq)
-    // (!sqDown.classList.contains('locked') || )
+  // lockedSqs.map(sq => {
+  // console.log(sq)
+  // (!sqDown.classList.contains('locked') || )
 
-    // no need till second line is cleared
-    // if (!sq.row + 1 > brokenLine) {
-    //   return sq.row++
-    // }
-    // sq.row++
-    // console.log(sq)
+  // no need till second line is cleared
+  // if (!sq.row + 1 > brokenLine) {
+  //   return sq.row++
+  // }
+  // sq.row++
+  // console.log(sq)
       
-    // })
-    // lockedSqs.map(sq => lockClass(sq))
-  }
+  // })
+  // lockedSqs.map(sq => lockClass(sq))
+  // }
 
   // Key movement
   function handleKeyUp(event) {
 
-    
+    function rotate() {
+      for (let i = 0; i <= 3; i++) {
+        // console.log(jTet.rotate[state]) gives 4 arrays, each with 4 arrays nested within them
+        tetrominoPos[i].row += tet[0].rotate[state][i][0]
+        tet[0].rotate[state][i][1]
+        tetrominoPos[i].col += tet[0].rotate[state][i][1]
+      }
+    }
 
     switch (event.keyCode) {
       
@@ -526,13 +538,9 @@ function init() {
         // up/rotate
       case 38:
         removeAll()
+
         if (!tetrominoPos.every(val => val.row < height - 1)) {
-          for (let i = 0; i <= 3; i++) {
-            // console.log(jTet.rotate[state]) gives 4 arrays, each with 4 arrays nested within them
-            tetrominoPos[i].row += tet[0].rotate[state][i][0]
-            tet[0].rotate[state][i][1]
-            tetrominoPos[i].col += tet[0].rotate[state][i][1]
-          }
+          rotate()
           // base wall or blocked check
           if (!tetrominoPos.every(val => val.row < height - 1) || tetrominoPos.some(val => cells[val.row][val.col].classList.contains('locked'))) {
             tetrominoPos.map(pos => pos.row -= 2)
@@ -541,11 +549,7 @@ function init() {
           state < 3 ? state++ : state = 0
           blockLanded()
         } else {
-          for (let i = 0; i <= 3; i++) {
-            tetrominoPos[i].row += tet[0].rotate[state][i][0]
-            tet[0].rotate[state][i][1]
-            tetrominoPos[i].col += tet[0].rotate[state][i][1]
-          }
+          rotate()
           // right wall
           if (!tetrominoPos.every( val => val.col < 9)) {
             tetrominoPos.map(pos => pos.col--)
