@@ -374,7 +374,7 @@ function init() {
   function replaceAll() {
     tetrominoPos.map(pos => addClass(pos))
   }
-
+  
   function getRandomLetter() {
     const num = Math.floor((Math.random() * 7))
     return shapes[num]
@@ -382,7 +382,9 @@ function init() {
 
   function createTetrominos() {
     //start new tet
-    tet = getRandomLetter()
+    tet = JSON.parse(JSON.stringify(getRandomLetter()))
+    console.log(tet)
+    
 
     //to clear of any content
     tetrominoPos = []
@@ -553,18 +555,6 @@ function init() {
           blockLanded()
         }
         replaceAll()
-
-        // if (!tetrominoPos.every(val => val.row < height - 1)) {
-        //   return
-        // }
-        // removeAll()
-        // tetrominoPos.map(pos => pos.row++)
-        // if (tetrominoPos.some(val => cells[val.row][val.col].classList.contains('locked'))) {
-        //   tetrominoPos.map(pos => pos.row--)
-        //   blockLanded()
-        // } else {
-        //   replaceAll()
-        // }
         break
       default:
         console.log('invalid key')
