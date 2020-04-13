@@ -466,7 +466,7 @@ function init() {
     clearInterval(dropId)
     state = 0
     tetrominoPos.map(pos => lockClass(pos))
-    createTetrominos()
+    !(tetrominoPos.some(sq => sq.row < 4)) ? createTetrominos() : gameOver()
   }
 
   // Line break
