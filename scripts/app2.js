@@ -3,7 +3,7 @@ function init() {
   const grid = document.querySelector('.grid')
   const next = document.querySelector('.next')
   const time = document.querySelector('#time')
-  const score = document.querySelector('.score')
+  const score = document.querySelector('#score')
 
   // const tetDom = document.querySelector('.occupied')
 
@@ -11,14 +11,14 @@ function init() {
   const width = 10
   const height = 20
   const cells = []
-  const nextShape = []
-  for (let i = 0; i < height; i++) {
-    cells.push([])
-  }
-
+  // for (let i = 0; i < height; i++) {
+  //   cells.push([])
+  // }
+  
   // game variables
-  const nextShapeCoordinates = [[7,8,10,11], [2,6,10,14], [6,7,10,11], [2,6,10,11],[3,6,7,11],[5,6,10,11],[3,7,10,11]]
-  let incomingShape
+  const nextShapeBox = []
+  const nextShapeCoordinates = [[6,7,9,10], [1,5,9,13], [5,6,9,10], [1,5,9,10],[2,5,6,10],[4,5,9,10],[2,6,9,10]]
+  let incomingShape = Math.floor((Math.random() * 7))
   let tet
   let tetrominoPos = []
   let state = 0
@@ -28,6 +28,7 @@ function init() {
   
   function createGrid() {
     for (let row = 0; row < height; row++) {
+      cells.push([])
       for (let col = 0; col < width; col++) {
         const cell = document.createElement('div')
         cell.dataset.row = row
@@ -38,6 +39,19 @@ function init() {
         cell.dataset.row < 4 ? cell.classList.add('hidden-grid') : null
       }
     }
+  }
+
+  function createTetrominos() {
+    tet = JSON.parse(JSON.stringify(shapes[incomingShape]))
+    getRandomLetter()
+    tetrominoPos = []
+    tet[0].starting.forEach(place => {
+      // console.log(place) returns [3,4]
+      tetrominoPos.push(place)
+      addClass(place)
+    })
+    drop()
+    lineCheck()
   }
   
   function timeCount() {
@@ -50,19 +64,30 @@ function init() {
     for (let i = 0; i < 16; i++) {
       const cell = document.createElement('div')
       next.appendChild(cell)
-      nextShape.push(cell)
+      nextShapeBox.push(cell)
     }
   }
 
   function getRandomLetter() {
     const num = Math.floor((Math.random() * 7))
-    generateNextShape(nextShapeCoordinates[num], num)
+    generateNextShape([...nextShapeCoordinates[num]], num)
   }
 
   function generateNextShape(id, num) {
-    nextShape.map(sq => sq.classList.remove('.occupied'))
-    id.map(place => nextShape[place].classList.add('occupied'))
-    incomingShape = JSON.parse(JSON.stringify(num))
+    const getShape = [...id]
+    const allNextDivs = next.children
+    for (let i = 0; i < allNextDivs.length; i++) {
+      if (allNextDivs[i].classList.contains('occupied')) {
+        allNextDivs[i].className = ('')
+      }
+    }
+    getShape.forEach(place => nextShapeBox[place].classList.add('occupied'))
+    incomingShape = num
+  }
+
+  function startGame() {
+    createTetrominos()
+    timeCount()
   }
 
   function gameOver() {
@@ -71,8 +96,8 @@ function init() {
 
   createGrid()
   nextShapeGrid()
+
   
-  timeCount()
 
 
   // create tetrominos
@@ -414,22 +439,7 @@ function init() {
   
   
 
-  function createTetrominos() {
-    //start new tet
-    tet = JSON.parse(JSON.stringify(getRandomLetter()))
-    //to clear of any content
-    tetrominoPos = []
-    tet[0].starting.forEach(place => {
-      // console.log(place) returns [3,4]
-      tetrominoPos.push(place)
-      addClass(place)
-    })
-
-
-    // tetDom.style.backgroundColor = tet[0].color
-    drop()
-    lineCheck()
-  }
+  
 
   // drop function
 
@@ -452,7 +462,7 @@ function init() {
   }
 
   function blockLanded() {
-    score.textContent = parseInt(score.textContent) + 160
+    score.textContent = Number(score.textContent) + 160
     clearInterval(dropId)
     state = 0
     tetrominoPos.map(pos => lockClass(pos))
@@ -469,7 +479,7 @@ function init() {
 
   function lineBreak(index) {
     // console.log(index)gives one number eg 19 at base
-    score.textContent = parseInt(score.textContent) + 1500
+    score.textContent = Number(score.textContent) + 1500
     // find all locked squares
     cells[index].map(sq => clearClass(sq))
     lineDrop(index)
@@ -601,7 +611,7 @@ function init() {
 
 
 
-  createTetrominos()
+  startGame()
 
   // Event Listeners
   document.addEventListener('keyup', handleKeyUp)

@@ -53,18 +53,6 @@ body {
 }
 
 .next {
-  background-color: aliceblue;
-}
-
-.timer {
-  background-color: aliceblue;
-}
-
-.score {
-  background-color: aliceblue;
-}
-
-.next {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -79,6 +67,28 @@ body {
   height: 36px;
   width: 36px;
 }
+
+.timer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 30%;
+  background-color: aliceblue;
+  
+}
+
+.score {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  height: 30%;
+  margin: 100px 0;
+  background-color: aliceblue;
+}
+
+
 
 
 
