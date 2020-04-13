@@ -94,11 +94,19 @@ function init() {
     clearInterval(timeId)
   }
 
-  createGrid()
-  nextShapeGrid()
-
+  function scoreIncrease(num) {
+    const tempScore = Number(score.textContent) + num
+    const scoreUp = setInterval(() => {
+      score.textContent = Number(score.textContent) + 1
+      if (tempScore === parseInt(score.textContent)) {
+        clearInterval(scoreUp)
+      }
+    }, 3)
+  }
   
 
+  createGrid()
+  nextShapeGrid()
 
   // create tetrominos
 
@@ -462,7 +470,7 @@ function init() {
   }
 
   function blockLanded() {
-    score.textContent = Number(score.textContent) + 160
+    scoreIncrease(100 + (Math.floor(Math.random() * 100)))
     clearInterval(dropId)
     state = 0
     tetrominoPos.map(pos => lockClass(pos))
