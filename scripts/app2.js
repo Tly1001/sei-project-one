@@ -1,20 +1,19 @@
-function init() {
-  // DOM elements
-  const grid = document.querySelector('.grid')
-  const next = document.querySelector('.next')
-  const time = document.querySelector('#time')
-  const score = document.querySelector('#score')
 
-  // const tetDom = document.querySelector('.occupied')
+function init(g, n) {
+  // DOM elements
+  const grid = document.querySelector(g)
+  const next = document.querySelector(n)
+  const score = document.querySelector('#score')
+  const score2 = document.querySelector('#score2')
+  const time = document.querySelector('#time1')
+  const time2 = document.querySelector('#time2')
 
   // grid variables
   const width = 10
   const height = 20
   const cells = []
-  // for (let i = 0; i < height; i++) {
-  //   cells.push([])
-  // }
-  
+
+
   // game variables
   const nextShapeBox = []
   const nextShapeCoordinates = [[6,7,9,10], [1,5,9,13], [5,6,9,10], [1,5,9,10],[2,5,6,10],[4,5,9,10],[2,6,9,10]]
@@ -55,9 +54,13 @@ function init() {
   }
   
   function timeCount() {
-    timeId = setInterval(() => {
-      time.textContent = parseInt(time.textContent) + 1
-    }, 1000)
+    if (g === '.grid') {
+      timeId = setInterval(() => {
+        time.textContent = parseInt(time.textContent) + 1
+        time2.textContent = time.textContent
+    
+      }, 1000)
+    }
   }
 
   function nextShapeGrid() {
@@ -77,11 +80,11 @@ function init() {
     const getShape = [...id]
     const allNextDivs = next.children
     for (let i = 0; i < allNextDivs.length; i++) {
-      if (allNextDivs[i].classList.contains('occupied')) {
+      if (allNextDivs[i].classList.contains('future')) {
         allNextDivs[i].className = ('')
       }
     }
-    getShape.forEach(place => nextShapeBox[place].classList.add('occupied'))
+    getShape.forEach(place => nextShapeBox[place].classList.add('future'))
     incomingShape = num
   }
 
@@ -96,12 +99,20 @@ function init() {
 
   function scoreIncrease(num) {
     const tempScore = Number(score.textContent) + num
+    const tempScore2 = Number(score.textContent) + num
     const scoreUp = setInterval(() => {
-      score.textContent = Number(score.textContent) + 1
-      if (tempScore === parseInt(score.textContent)) {
-        clearInterval(scoreUp)
+      if (g === '.grid') {
+        score.textContent = Number(score.textContent) + 10
+        if (tempScore <= parseInt(score.textContent)) {
+          clearInterval(scoreUp)
+        }
+      } else {
+        score2.textContent = Number(score2.textContent) + 10
+        if (tempScore2 <= parseInt(score2.textContent)) {
+          clearInterval(scoreUp)
+        }
       }
-    }, 3)
+    }, 1)
   }
   
 
@@ -466,11 +477,11 @@ function init() {
       } else {
         replaceAll()
       }
-    }, 20000)
+    }, 3000)
   }
 
   function blockLanded() {
-    scoreIncrease(100 + (Math.floor(Math.random() * 100)))
+    scoreIncrease(800 + (Math.floor(Math.random() * 300)))
     clearInterval(dropId)
     state = 0
     tetrominoPos.map(pos => lockClass(pos))
@@ -487,7 +498,7 @@ function init() {
 
   function lineBreak(index) {
     // console.log(index)gives one number eg 19 at base
-    score.textContent = Number(score.textContent) + 1500
+    score.textContent = Number(score.textContent) + 10000
     // find all locked squares
     cells[index].map(sq => clearClass(sq))
     lineDrop(index)
@@ -501,7 +512,6 @@ function init() {
     // console.log(allLocked) gives array of the different squares with the class
     const lockedRows = []
     const lockedCols = []
-
     allLocked.forEach(sq => {
       if (parseInt(sq.dataset.row) < brokenLine) {
         lockedRows.push(JSON.parse(JSON.stringify(parseInt(sq.dataset.row))))
@@ -510,97 +520,96 @@ function init() {
         return
       }
     })
-
+    
     // remove change and replace locked squares
     setTimeout(function() {
-      for (let i = 0; i < lockedCols.length; i++) {
-        cells[lockedRows[i]][lockedCols[i]].classList.remove('locked')
-        cells[lockedRows[i] + 1][lockedCols[i]].classList.add('locked')
+      for (let i = lockedRows.length - 1; i >= 0; i--) {
+        cells[lockedRows[i]][lockedCols[i]].classList.remove('locked', 'occupied')
+        cells[lockedRows[i] + 1][lockedCols[i]].classList.add('locked', 'occupied')
       }
-    }, 800)
-    
-    
+    }, 400)
   }
   
   // Key movement
   function handleKeyUp(event) {
+    const keyIndex = [[37, 38, 39, 40, 191], [65, 87, 68, 83, 81]]
+    let keys
+    g === '.grid' ? keys = keyIndex[0] : keys = keyIndex[1]
 
     function rotate() {
       for (let i = 0; i <= 3; i++) {
         // console.log(jTet.rotate[state]) gives 4 arrays, each with 4 arrays nested within them
         tetrominoPos[i].row += tet[0].rotate[state][i][0]
-        tet[0].rotate[state][i][1]
         tetrominoPos[i].col += tet[0].rotate[state][i][1]
+        tet[0].rotate[state][i][1]
       }
     }
+
+    function rightWallCollisionDectect() {
+      while (tetrominoPos.some(val => val.col > 9) && tetrominoPos.some(val => val.col > 8)) {
+        tetrominoPos.map(pos => pos.col--)
+      }
+    }
+
+    function leftWallCollisionDetect() {
+      while (tetrominoPos.some(val => val.col < 0) && tetrominoPos.some(val => val.col < 2)) {
+        tetrominoPos.map(pos => pos.col++)
+      }
+    }
+    // cant get to work
+    // function blockCheck(input) {
+    //   if (tetrominoPos.some(val => cells[val.row][val.col].classList.contains('locked'))) {
+    //     tetrominoPos.map(pos => pos.col`${input}`)
+    //   }
+    // }
 
     switch (event.keyCode) {
 
       // right
-      case 39:
+      case keys[2]:
         // unrespond state
         removeAll()
         tetrominoPos.map(pos => pos.col++)
-        if (!tetrominoPos.every(val => val.col <= 9) || tetrominoPos.some(val => cells[val.row][val.col].classList.contains('locked'))) {
+        rightWallCollisionDectect()
+        // block check
+        if (tetrominoPos.some(val => cells[val.row][val.col].classList.contains('locked'))) {
           tetrominoPos.map(pos => pos.col--)
         }
         replaceAll()
         break
         // left
-      case 37:
+      case keys[0]:
         removeAll()
         tetrominoPos.map(pos => pos.col--)
-        if (!tetrominoPos.every(val => val.col >= 0) || tetrominoPos.some(val => cells[val.row][val.col].classList.contains('locked'))) {
+        leftWallCollisionDetect()
+        // block check
+        if (tetrominoPos.some(val => cells[val.row][val.col].classList.contains('locked'))) {
           tetrominoPos.map(pos => pos.col++)
-        }
+        }        
         replaceAll()
         break
         // up/rotate
-      case 38:
+      case keys[1]:
         removeAll()
-        rotate()
-        if (!tetrominoPos.every(val => val.row < height - 1)) {
-          rotate()
-          // base wall
-          if (!tetrominoPos.every(val => val.row < height - 1) || tetrominoPos.some(val => cells[val.row][val.col].classList.contains('locked'))) {
-            
-            tetrominoPos.map(pos => pos.row -= 1)
-          }
-        }
-          
-        // right wall
-        if (!tetrominoPos.every(val => val.col <= 9)) {
-          if (!tetrominoPos.some(val => val.col > 10)) {
-            tetrominoPos.map(pos => pos.col--)
-          } else {
-            tetrominoPos.map(pos => pos.col -= 2)
-          }
-        }
 
-        // left wall
-        if (!tetrominoPos.every(val => val.col >= 0)) {
-          if (!tetrominoPos.some(val => val.col < -1)) {
-            tetrominoPos.map(pos => pos.col++)
-          } else {
-            tetrominoPos.map(pos => pos.col += 2)
-          }
+        // base wall
+        rotate()
+        while (tetrominoPos.some(val => val.row > height - 1)) {
+          tetrominoPos.map(pos => pos.row--)
         }
-        
+        rightWallCollisionDectect()
+        leftWallCollisionDetect()  
+
         // block check
         while (tetrominoPos.some(val => cells[val.row][val.col].classList.contains('locked'))) {
-          tetrominoPos.map(pos => pos.row -= 1)
-          if (tetrominoPos.some(val => val.col > 9)) {
-            tetrominoPos.map(pos => pos.col--)
-          }
-          if (tetrominoPos.some(val => val.col < 0)) {
-            tetrominoPos.map(pos => pos.col++)
-          }
+          tetrominoPos.map(pos => pos.row--)
         }
+        
         replaceAll()
         state < 3 ? state++ : state = 0
         break
         // down
-      case 40:
+      case keys[3]:
         removeAll()
         tetrominoPos.map(pos => pos.row++)
         if (!tetrominoPos.every(val => val.row < height) || tetrominoPos.some(val => cells[val.row][val.col].classList.contains('locked'))) {
@@ -609,15 +618,26 @@ function init() {
         }
         replaceAll()
         break
+        // drop
+      case keys[4]:
+        // unrespond state
+        removeAll()
+        while (tetrominoPos.every(val => val.row < height) && !tetrominoPos.some(val => cells[val.row][val.col].classList.contains('locked'))) {
+          tetrominoPos.map(pos => pos.row++)
+        }
+        console.log(tetrominoPos)
+        tetrominoPos.map(pos => pos.row -= 1)
+        // because sometimes it still goes over
+        if (!tetrominoPos.every(val => val.row < height)) {
+          tetrominoPos.map(pos => pos.row -= 1)
+        }
+        replaceAll()
+        blockLanded()
+        break
       default:
         console.log('invalid key')
     }
   }
-
-  
-
-
-
 
   startGame()
 
@@ -626,4 +646,7 @@ function init() {
 
 }
 
-window.addEventListener('DOMContentLoaded', init)
+window.addEventListener('DOMContentLoaded', function() { 
+  init('.grid', '.next', 1)
+  init('.grid2', '.next2', 2)
+})

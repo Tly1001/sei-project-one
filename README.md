@@ -17,3 +17,14 @@ This was completed with no hard copying of code, a lil working grease, and a can
 
 
 <!-- Line Clearing -->
+
+
+Credits:
+
+Starter Code: Jack May - General Assembly
+
+Vidoes: musicvid.org
+Music:  Back to besaid - Dj Cutman
+        Do you wanna do nothing with me? - Lawrence
+        Say you won't - Brasstracks
+        Automatic - Wave Racer
