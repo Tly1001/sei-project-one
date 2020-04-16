@@ -193,9 +193,9 @@ p {
 }
 
 .slider-text {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   font-family: 'Abel', sans-serif;
-  font-size: 30px;
+  font-size: 25px;
   color: rgba(238, 230, 208, 1);
 }
 
@@ -271,7 +271,7 @@ p {
 }
 
 .win-lose {
-  display: flex;
+  display: none;
   position: absolute;
   justify-content: center;
   align-items: center;
@@ -281,9 +281,12 @@ p {
 }
 
 .game-over-text {
-  border: 2px solid black;
+  border: none;
   font-size: 30px;
   font-family: 'Press Start 2P', cursive;
+  color: white;
+  text-shadow: 1px 0.5 black;
+  text-align: center;
 }
 
 .loser {
@@ -298,7 +301,7 @@ p {
   animation: winnersGlow 3s infinite 0s linear;
 }
 
-@keyframes gameOverDrop{
+@keyframes gameOverDrop {
   0%{
       transform: translateY(-300px);
       opacity: 0;
@@ -317,7 +320,7 @@ p {
       }
 }
 
-@keyframes winnerRise{
+@keyframes winnerRise {
   0%{
       transform: translateY(0);
       opacity: 0;
@@ -405,7 +408,7 @@ p {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  opacity: 0.8;
+  opacity: 0.9;
 }
 
 .container,
@@ -577,6 +580,10 @@ p {
   pointer-events: none;
 }
 
+.land {
+  animation: landed 0.7s 1 0s linear;
+}
+
 @keyframes landed {
   0% {
     transform: rotate(0);
@@ -595,56 +602,56 @@ p {
   19% {
     transform: rotate(0);
     background: blue;
-    box-shadow: 0 0 30px 20px dodgerblue;
+    box-shadow: 0 0 30px 10px dodgerblue;
     ;
   }
 
   29% {
     transform: rotate(0);
     background: blue;
-    box-shadow: 0 0 60px 30px dodgerblue;
+    box-shadow: 0 0 60px 20px dodgerblue;
     ;
   }
 
   38% {
     transform: rotate(0);
     background: blue;
-    box-shadow: 0 0 80px 40px dodgerblue;
+    box-shadow: 0 0 80px 30px dodgerblue;
     ;
   }
 
   46% {
     transform: rotate(0);
     background: blue;
-    box-shadow: 0 0 100px 50px rgb(104, 145, 212);
+    box-shadow: 0 0 100px 40px rgb(104, 145, 212);
     ;
   }
 
   55% {
     transform: rotate(0);
     background: blue;
-    box-shadow: 0 0 120px 50px grey;
+    box-shadow: 0 0 120px 40px grey;
     ;
   }
 
   67% {
     transform: rotate(0);
     background: blue;
-    box-shadow: 0 0 160px 70px grey;
+    box-shadow: 0 0 160px 50px grey;
     ;
   }
 
   82% {
     transform: rotate(0);
     background: grey;
-    box-shadow: 0 0 200px 60px black;
+    box-shadow: 0 0 200px 40px black;
     ;
   }
 
   96% {
     transform: rotate(0);
     background: grey;
-    box-shadow: 0 0 200px 30px black;
+    box-shadow: 0 0 200px 20px black;
     ;
   }
 
@@ -655,6 +662,128 @@ p {
     ;
   }
 }
+
+.crash {
+  animation: tremble 1s 1 0s linear;
+}
+
+@keyframes tremble{
+  0%{
+      }
+  10%{
+      transform: translateX(10px);
+      }
+  11%{
+      transform: translateX(-10px);
+      }
+  13%{
+      transform: translateX(20px);
+      }
+  22%{
+      transform: translateX(10px);
+      }
+  23%{
+      transform: translateX(-20px);
+      }
+  34%{
+      transform: translateX(0px);
+      }
+  38%{
+      transform: translateX(-10px);
+      }
+  41%{
+      transform: translateX(10px);
+      }
+  43%{
+      transform: translateX(-10px);
+      }
+  47%{
+      transform: translateX(-20px);
+      }
+  51%{
+      transform: translateX(20px);
+      }
+  56%{
+      transform: translateX(0px);
+      }
+  63%{
+      transform: translateX(10px);
+      }
+  65%{
+      transform: translateX(-10px);
+      }
+  71%{
+      transform: translateX(20px);
+      }
+  75%{
+      transform: translateX(10px);
+      }
+  80%{
+      transform: translateX(-10px);
+      }
+  83%{
+      transform: translateX(10px);
+      }
+  87%{
+      transform: translateX(-10px);
+      }
+}
+
+.cleared {
+  animation: clear 1s 1 0s linear;
+}
+
+@keyframes clear{
+  0%{
+      transform: rotate(0);
+      background: #04bfd4;
+      opacity: 1;
+      }
+  5%{
+      transform: rotate(0);
+      background: #f5da42;
+      }
+  13%{
+      transform: rotate(0);
+      background: #42f5ad;
+      }
+  23%{
+      transform: rotate(0);
+      background: #d152eb;
+      }
+  32%{
+      transform: rotate(0);
+      background: #cc0213;
+      }
+  44%{
+      transform: rotate(0);
+      background: #ff7512;
+      }
+  53%{
+      transform: rotate(0);
+      background: #093ddb;
+      }
+  65%{
+      transform: rotate(0);
+      background: #093ddb;
+      }
+  75%{
+      transform: rotate(0);
+      background: #000000;
+      box-shadow: 0 0 60px 30px white;
+      }
+  85%{
+      transform: rotate(0);
+      background: #000000;
+      }
+  100%{
+      transform: rotate(0);
+      background: #000000;
+      opacity: 0;
+      }
+}
+
+
 
 @keyframes fadeInLeft {
   from {

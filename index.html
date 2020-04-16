@@ -12,7 +12,9 @@
 </head>
 
 <body>
-  <video id="game-vid" src="assets/return_to_besaid.mp4"></video>
+  <!-- <video id="game-vid" src="assets/automatic.mp4"></video> -->
+  <video id="game-vid" src="assets/Say_you_won't.mp4"></video>
+  <!-- <video id="game-vid" src="assets/return_to_besaid.mp4"></video> -->
   <video class="menu-backg" src="assets/Classic_Net_Flare .mp4" loop muted></video>
   <main>
     <div class="menu-screen">
@@ -28,6 +30,8 @@
         <input class="slider" id="volume" type="range" min="0" max="100" value="70" step="10">
         <p class="slider-text">Sound Effects</p>
         <input class="slider" id="sfx" type="range" min="0" max="100" value="70" step="10">
+        <p class="slider-text">Brightness</p>
+        <input class="slider" id="brightness" type="range" min="0" max="100" value="100" step="10">
         <p class="press-enter">Press enter to continue</p>
         <!-- this is refor rebinding -->
         <!-- <div class="controls" id="controls1">player 1 controls</div> -->
@@ -38,15 +42,15 @@
         <div class="vid-wrap">
           <div class="stage-choice">
           <p>Return to Besaid</p>
-          <video class="vid besaid" src="assets/clip_return_to_besaid.mp4"></video>
+          <video class="vid besaid" src="assets/clip_return_to_besaid.mp4" value="assets/return_to_besaid.mp4"></video>
         </div>
         <div class="stage-choice">
           <p>Automatic</p>
-          <video class="vid automatic" src="assets/clip_automatic.mp4"></video>
+          <video class="vid automatic" src="assets/clip_automatic.mp4" value="assets/automatic.mp4"></video>
         </div>
         <div class="stage-choice">
           <p>Say you won't</p>
-          <video class="vid say-you-wont" src="assets/clip_say_you_won't.mp4"></video>
+          <video class="vid say-you-wont" src="assets/clip_say_you_won't.mp4" value="assets/Say_you_won't.mp4"></video>
         </div>
         </div>
       </div>
@@ -54,9 +58,11 @@
     </div>
     <div class="wrapper">
       <div class="container">
-        <div class="win-lose">
+        <div class="win-lose" id="win-lose1">
           <div>
-            <p class="game-over-text" id="p1-lose">Game Over</p>
+            <p class="game-over-text game-over1" id="p1-lose">Game Over</p>
+            <p class="game-over-text game-over1">Final score</p>
+            <p class="game-over-text game-over1 f-score1"></p>
           </div>
         </div>
         <div class="grid"></div>
@@ -77,9 +83,11 @@
       </div>
 
       <div class="container2">
-        <div class="win-lose p2-lose">
-          <div class=".winner .winning-glow">
-            <p class="game-over-text " id="p2-lose">Game Over</p>
+        <div class="win-lose" id="win-lose2">
+          <div class=".winner">
+            <p class="game-over-text game-over2" id="p2-lose">Game Over</p>
+            <p class="game-over-text game-over2">Final score</p>
+            <p class="game-over-text game-over2 f-score2"></p>
           </div>
         </div>
         <div class="grid2"></div>

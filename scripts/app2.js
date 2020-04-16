@@ -8,20 +8,30 @@ function init() {
   const optionScreen = document.querySelector('.options-wrap')
   const menuScreen = document.querySelector('.button-wrap')
   const gameWrap = document.querySelector('.wrapper')
+  const player1Screen = document.querySelector('.container')
   const player2Screen = document.querySelector('.container2')
   const backBtn = document.querySelector('#back-btn')
   const video = document.querySelector('#game-vid')
+  // const video2 = document.querySelector('#game-vid2')
+  // const video3 = document.querySelector('#game-vid3')
   const menuBgVid = document.querySelector('.menu-backg')
   const stageMenu = document.querySelector('.stage-select')
   const previewVid = document.querySelectorAll('.vid')
   const pauseText = document.querySelector('.press-enter')
   const volume = document.querySelector('#volume')
   const sfx = document.querySelector('#sfx')
+  const vidBrightness = document.querySelector('#brightness')
+  const winLoseScreen1 = document.querySelector('#win-lose1')
+  const winLoseScreen2 = document.querySelector('#win-lose2')
 
   // Menu variables
   let currentPage = 'main'
   let players
-  const bgVideos = ['assets/Classic_Net_Flare .mp4']
+  const bgVideos = ['assets/clip_Classic_Net_Flare .mp4', 'assets/clip_tetropolis.mp4','assets/clip_sky neon.mp4','assets/clip_tetro.mp4']
+  const bgMath = Math.floor(Math.random() * 4)
+  menuBgVid.setAttribute('src', bgVideos[bgMath])
+  let meteors
+
 
   // Menu functions
   function intro() {
@@ -99,25 +109,6 @@ function init() {
     }, 900)
   }
 
-  function setVolume() {
-    video.volume = volume.value / 100
-  }
-
-  function setSFX() {
-    audio.volume = volume.value / 100
-  }
-
-  intro()
-  onePlayerBtn.addEventListener('click',stageSelect)
-  twoPlayerBtn.addEventListener('click',stageSelect)
-  optionBtn.addEventListener('click', options)
-  backBtn.addEventListener('click', goBack)
-  menu.addEventListener('mouseover',function () {
-    menuBgVid.play()
-  })
-  volume.addEventListener('change', setVolume)
-  sfx.addEventListener('change', setSFX)
-
   function stageSelectIntro() {
     stageMenu.classList.remove('disabled')
     previewVid.forEach(vid => {
@@ -128,6 +119,9 @@ function init() {
         event.target.pause()
       })
       vid.addEventListener('click', function() {
+        // console.log(event.target.value)
+        
+        // video.setAttribute('src', event.target.value)
         menuBgVid.style.display = 'none'
         menu.style.display = 'none'
         stageMenu.style.display = 'none'
@@ -145,6 +139,32 @@ function init() {
       })
     })
   }
+
+  function setVolume() {
+    video.volume = volume.value / 100
+  }
+
+  function setSFX() {
+    sfx.volume = sfx.value / 100
+  }
+  
+  function setBrightness() {
+    video.style.filter = `brightness(${vidBrightness.value}%)`
+  }
+
+  intro()
+  onePlayerBtn.addEventListener('click',stageSelect)
+  twoPlayerBtn.addEventListener('click',stageSelect)
+  optionBtn.addEventListener('click', options)
+  backBtn.addEventListener('click', goBack)
+  menu.addEventListener('mouseover',function () {
+    menuBgVid.play()
+  })
+  volume.addEventListener('change', setVolume)
+  sfx.addEventListener('change', setSFX)
+  vidBrightness.addEventListener('change', setBrightness)
+
+  
 
 
 
@@ -248,6 +268,30 @@ function init() {
     }
 
     function gameOver() {
+      if (players === 1) {
+        winLoseScreen1.style.display = 'flex'
+        document.querySelector('.f-score1').textContent = score.textContent
+        // document.querySelectorAll('.game-over1').classList.add('.loser')
+        for (let i = 0; i < 4; i++) {
+          cells[i].forEach(sq => sq.classList.remove('hidden-grid'))
+        }
+      } else {
+        if (g === '.grid') {
+          winLoseScreen1.style.display = 'flex'
+          document.querySelector('.f-score1').textContent = score.textContent
+          // document.querySelectorAll('.game-over1').classList.add('.loser')
+          for (let i = 0; i < 4; i++) {
+            cells[i].forEach(sq => sq.classList.remove('hidden-grid'))
+          }
+        } else {
+          winLoseScreen2.style.display = 'flex'
+          document.querySelector('.f-score2').textContent = score2.textContent
+          // document.querySelectorAll('.game-over2').classList.add('.loser')
+          for (let i = 0; i < 4; i++) {
+            cells[i].forEach(sq => sq.classList.remove('hidden-grid'))
+          }
+        }
+      }
       clearInterval(timeId)
     }
 
@@ -637,7 +681,58 @@ function init() {
       }
     }
   
+    function lineStrike() {
+      if (players === 2) {
+        if (g === '.grid' && meteors === 2) {
+          const strikeTeam2 = []
+          for (let i = 0; i < 6; i++) {
+            strikeTeam2.push(Math.floor(Math.random() * 9))
+          } 
+          meteors = 0
+          meteor(strikeTeam2)
+        } 
+        if (g === '.grid2' && meteors === 1) {
+          const strikeTeam1 = []
+          for (let i = 0; i < 6; i++) {
+            strikeTeam1.push(Math.floor(Math.random() * 9))
+          } 
+          meteors = 0
+          meteor(strikeTeam1)
+        }
+      }
 
+      
+    }
+    function meteor(coordinates) {
+      coordinates.forEach(col => {
+        let newBoyRow = 2
+        const newBoyCol = col
+
+        while (newBoyRow < height && !cells[newBoyRow][newBoyCol].classList.contains('locked')) {
+          newBoyRow++
+        }
+        newBoyRow++
+        // because sometimes it still goes over
+        if (!newBoyRow < height) {
+          newBoyRow--
+        }
+        
+        cells[newBoyRow][newBoyCol].classList.add('locked')
+        
+        console.log(cells[newBoyRow][newBoyCol])
+      })
+      if (g === '.grid') {
+        player1Screen.classList.add('tremble')
+        setTimeout(() => {
+          g.classList.remove('tremble')
+        }, 1100)
+      } else {
+        player2Screen.classList.add('tremble')
+        setTimeout(() => {
+          g.classList.remove('tremble')
+        }, 1100)
+      }
+    }
   
 
     // drop function
@@ -663,7 +758,11 @@ function init() {
       scoreIncrease(800 + (Math.floor(Math.random() * 300)))
       clearInterval(dropId)
       state = 0
-      tetrominoPos.map(pos => lockClass(pos))
+      tetrominoPos.map(pos => {
+        cells[pos.row][pos.col].classList.add('land')
+        lockClass(pos)
+      })
+      lineStrike()
       !(tetrominoPos.some(sq => sq.row < 4)) ? createTetrominos() : gameOver()
     }
 
@@ -679,12 +778,22 @@ function init() {
     // console.log(index)gives one number eg 19 at base
       score.textContent = Number(score.textContent) + 10000
       // find all locked squares
-      cells[index].map(sq => clearClass(sq))
+      cells[index].map(sq =>  {
+        sq.classList.add('cleared')
+        setTimeout(function() {
+          sq.classList.remove('cleared')
+          clearClass(sq)
+        }, 1100)
+
+      })
       level++
       levelUp()
-      lineDrop(index)
+      setTimeout(function() {
+        lineDrop(index)
+      }, 1200)
+      g === '.grid' ? meteors = 1 : meteors = 2
     }
-
+    
     function lineDrop(brokenLine) {
       // identify all locked squares
       let allLocked 
@@ -788,6 +897,7 @@ function init() {
           replaceAll()
           state < 3 ? state++ : state = 0
           break
+
         // down
         case keys[3]:
           removeAll()
@@ -805,7 +915,6 @@ function init() {
           while (tetrominoPos.every(val => val.row < height) && !tetrominoPos.some(val => cells[val.row][val.col].classList.contains('locked'))) {
             tetrominoPos.map(pos => pos.row++)
           }
-          console.log(tetrominoPos)
           tetrominoPos.map(pos => pos.row -= 1)
           // because sometimes it still goes over
           if (!tetrominoPos.every(val => val.row < height)) {
@@ -821,6 +930,7 @@ function init() {
           if (player === 1) {
             menu.style.display = 'none'
             optionScreen.style.display = 'none'
+            optionScreen.classList.add('disabled')
             gameWrap.style.display = 'flex'
             pauseText.style.display = 'none'
             video.play()
@@ -830,8 +940,10 @@ function init() {
           } else {
             menu.style.display = 'block'
             optionScreen.style.display = 'flex'
+            optionScreen.classList.remove('disabled')
             gameWrap.style.display = 'none'
             pauseText.style.display = 'flex'
+            video.pause()
             clearInterval(dropId)
             clearInterval(timeId)
             player++
