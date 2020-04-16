@@ -6,31 +6,99 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <link rel="stylesheet" href="styles/main.css">
-  <!-- <script src="scripts/app2.js"></script> -->
+  <link href="https://fonts.googleapis.com/css2?family=Abel&family=Righteous&family=Roboto+Condensed&family=Russo+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <script src="scripts/app2.js"></script>
 </head>
 
 <body>
-  <!-- <video src=""></video> -->
+  <video id="game-vid" src="assets/return_to_besaid.mp4"></video>
+  <video class="menu-backg" src="assets/Classic_Net_Flare .mp4" loop muted></video>
   <main>
-    <div class="menu-screen"></div>
+    <div class="menu-screen">
+      <h1>The Tetris Project</h1>
+      <ul class="button-wrap">
+        <li class="buttons loaded1" id="one-player" value="1">Single player</li>
+        <li class="buttons loaded2" id="two-player" value="2">Two player</li>
+        <li class="buttons loaded3" id="options">Options</li>
+      </ul>
+      <div class="options-wrap">
+        <h2>Options</h2>
+        <p class="slider-text">Volume</p>
+        <input class="slider" id="volume" type="range" min="0" max="100" value="70" step="10">
+        <p class="slider-text">Sound Effects</p>
+        <input class="slider" id="sfx" type="range" min="0" max="100" value="70" step="10">
+        <p class="press-enter">Press enter to continue</p>
+        <!-- this is refor rebinding -->
+        <!-- <div class="controls" id="controls1">player 1 controls</div> -->
+        <!-- <div class="controls" id="controls2">player 2 controls</div> -->
+      </div>
+      <div class="stage-select">
+        <h2>Stage Select</h2>
+        <div class="vid-wrap">
+          <div class="stage-choice">
+          <p>Return to Besaid</p>
+          <video class="vid besaid" src="assets/clip_return_to_besaid.mp4"></video>
+        </div>
+        <div class="stage-choice">
+          <p>Automatic</p>
+          <video class="vid automatic" src="assets/clip_automatic.mp4"></video>
+        </div>
+        <div class="stage-choice">
+          <p>Say you won't</p>
+          <video class="vid say-you-wont" src="assets/clip_say_you_won't.mp4"></video>
+        </div>
+        </div>
+      </div>
+      <li class="back" id="back-btn">Back</li>
+    </div>
     <div class="wrapper">
       <div class="container">
+        <div class="win-lose">
+          <div>
+            <p class="game-over-text" id="p1-lose">Game Over</p>
+          </div>
+        </div>
         <div class="grid"></div>
         <div class="sidebar">
           <div class="next"></div>
-          <div class="timer">time<span class="time" id="time1">0</span></div>
+          <div class="timer">Time<span class="time" id="time1">0</span></div>
           <div class="score">score<span id="score">0</span></div>
-        </div>
-        <div class="container2">
-          <div class="grid2"></div>
-          <div class="sidebar2">
-            <div class="next2"></div>
-            <div class="timer2">time<span class=" time" id="time2">0</span></div>
-            <div class="score2">score<span id="score2">0</span></div>
+          <div class="controls-ingame">
+            <p>controls:</p>
+            <p class="text">rotate = ⬆️</p>
+            <p class="text">left = ⬅️</p>
+            <p class="text">right = ➡️ </p>
+            <p class="text">down = ⬇️</p>
+            <p class="text">drop = ⁄</p>
+            <p class="text">pause = ⏎ </p>
           </div>
         </div>
       </div>
+
+      <div class="container2">
+        <div class="win-lose p2-lose">
+          <div class=".winner .winning-glow">
+            <p class="game-over-text " id="p2-lose">Game Over</p>
+          </div>
+        </div>
+        <div class="grid2"></div>
+        <div class="sidebar2">
+          <div class="next2"></div>
+          <div class="timer2">Time<span class="time" id="time2">0</span></div>
+          <div class="score2">score<span id="score2">0</span></div>
+          <div class="controls-ingame">
+            <p>controls:</p>
+            <p class="text">rotate = W</p>
+            <p class="text">left = A</p>
+            <p class="text">right = D </p>
+            <p class="text">down = S</p>
+            <p class="text">drop = Q</p>
+            <p class="text">pause = ⏎ </p>
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
 
 </body>
