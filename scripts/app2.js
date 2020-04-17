@@ -18,11 +18,21 @@ function init() {
   const stageMenu = document.querySelector('.stage-select')
   const previewVid = document.querySelectorAll('.vid')
   const pauseText = document.querySelector('.press-enter')
-  const volume = document.querySelector('#volume')
-  const sfx = document.querySelector('#sfx')
   const vidBrightness = document.querySelector('#brightness')
   const winLoseScreen1 = document.querySelector('#win-lose1')
   const winLoseScreen2 = document.querySelector('#win-lose2')
+  
+  // sound variables
+  const volume = document.querySelector('#volume')
+  const sfx = document.querySelector('#sfx')
+  const audio = document.querySelectorAll('audio')
+  const sfxCon = document.querySelector('#confirm-sfx')
+  const sfxCon3 = document.querySelector('#confirm3-sfx')
+  const sfxTextTap = document.querySelector('#text-tap')
+  const sfxLand = document.querySelector('#land-sfx')
+  const sfxCrash = document.querySelector('#crash-sfx')
+  const sfxDrop = document.querySelector('#drop-sfx')
+  const sfxLose = document.querySelector('#lose-sfx')
 
   // Menu variables
   let currentPage = 'main'
@@ -108,55 +118,88 @@ function init() {
       backIntro()
     }, 900)
   }
-
+  
   function stageSelectIntro() {
     stageMenu.classList.remove('disabled')
     previewVid.forEach(vid => {
-      vid.addEventListener('mouseover', function(event) {
-        event.target.play()
-      })
-      vid.addEventListener('mouseout', function(event) {
-        event.target.pause()
-      })
-      vid.addEventListener('click', function() {
-        // console.log(event.target.value)
-        
-        // video.setAttribute('src', event.target.value)
-        menuBgVid.style.display = 'none'
-        menu.style.display = 'none'
-        stageMenu.style.display = 'none'
-        backBtn.style.display = 'none'
-        gameWrap.style.display = 'flex'
-        video.style.display = 'inline'
-        video.play()
-        if (players === 1) {
-          game('.grid', '.next')
-        } else {
-          player2Screen.style.display = 'flex'
-          game('.grid', '.next')
-          game('.grid2', '.next2')
-        }
-      })
+      setTimeout(function() {
+        vid.addEventListener('mouseover', function(event) {
+          event.target.play()
+        })
+        vid.addEventListener('mouseout', function(event) {
+          event.target.pause()
+        })
+      }, 300)
+      vid.addEventListener('click', gameInitiate)
+      // doesn't work yet
+      // video.setAttribute('src', event.target.value)
     })
   }
 
+  function gameInitiate() {
+    sfxCrash.play()
+    previewVid.forEach(vid => {
+      vid.removeEventListener('click', gameInitiate)
+
+    })
+    setTimeout(function() {
+      menuBgVid.style.display = 'none'
+      menu.style.display = 'none'
+      stageMenu.style.display = 'none'
+      backBtn.style.display = 'none'
+      gameWrap.style.display = 'flex'
+      video.style.display = 'inline'
+      video.play()
+      if (players === 1) {
+        game('.grid', '.next')
+      } else {
+        player2Screen.style.display = 'flex'
+        game('.grid', '.next')
+        game('.grid2', '.next2')
+      }
+    }, 700)
+  }
+  
   function setVolume() {
     video.volume = volume.value / 100
   }
 
   function setSFX() {
-    sfx.volume = sfx.value / 100
+    audio.volume = sfx.value / 100
+    // sfxCon3.play()
   }
   
   function setBrightness() {
     video.style.filter = `brightness(${vidBrightness.value}%)`
   }
 
+  function tap() {
+    sfxTextTap.play()
+  }
   intro()
-  onePlayerBtn.addEventListener('click',stageSelect)
-  twoPlayerBtn.addEventListener('click',stageSelect)
-  optionBtn.addEventListener('click', options)
-  backBtn.addEventListener('click', goBack)
+  onePlayerBtn.addEventListener('mouseover',tap)
+  onePlayerBtn.addEventListener('click',function (event) {
+    sfxCon3.play()
+    stageSelect(event)
+  })
+
+  twoPlayerBtn.addEventListener('mouseover',tap)
+  twoPlayerBtn.addEventListener('click',function (event) {
+    sfxCon3.play()
+    stageSelect(event)
+  })
+
+  optionBtn.addEventListener('mouseover', tap)
+  optionBtn.addEventListener('click',function (event) {
+    sfxCon3.play()
+    options(event)
+  })
+
+
+  backBtn.addEventListener('click',function (event) {
+    sfxCon.play()
+    goBack(event)
+  })
   menu.addEventListener('mouseover',function () {
     menuBgVid.play()
   })
@@ -177,13 +220,10 @@ function init() {
     const time = document.querySelector('#time1')
     const time2 = document.querySelector('#time2')
 
-
-
     // grid variables
     const width = 10
     const height = 20
     const cells = []
-
 
     // game variables
     const nextShapeBox = []
@@ -197,6 +237,11 @@ function init() {
     let level = 0
     let speed = 1500
     let player = 0
+    //     const colors = ['#04bfd4','#f5da42','#42f5ad', '#d152eb', '#cc0213', '#cc0213', '#ff7512']
+    let currentColor
+    function generateColor() {
+      currentColor = 'color' + parseInt((Math.floor(Math.random() * 8)))     
+    }
 
   
     function createGrid() {
@@ -216,6 +261,7 @@ function init() {
 
     function createTetrominos() {
       tet = JSON.parse(JSON.stringify(shapes[incomingShape]))
+      generateColor()
       getRandomLetter()
       tetrominoPos = []
       tet[0].starting.forEach(place => {
@@ -268,6 +314,7 @@ function init() {
     }
 
     function gameOver() {
+      sfxLose.play()
       if (players === 1) {
         winLoseScreen1.style.display = 'flex'
         document.querySelector('.f-score1').textContent = score.textContent
@@ -633,11 +680,11 @@ function init() {
 
     function addClass(pos) {
     // console.log(pos) returns row:num col:num
-      cells[pos.row][pos.col].classList.add('occupied')
+      cells[pos.row][pos.col].classList.add('occupied', currentColor)
     }
 
     function removeClass(pos) {
-      cells[pos.row][pos.col].classList.contains('occupied') ? cells[pos.row][pos.col].classList.remove('occupied') : null
+      cells[pos.row][pos.col].classList.contains('occupied') ? cells[pos.row][pos.col].classList.remove('occupied', currentColor) : null
     }
 
     function lockClass(pos) {
@@ -700,39 +747,36 @@ function init() {
           meteor(strikeTeam1)
         }
       }
-
-      
     }
-    function meteor(coordinates) {
-      coordinates.forEach(col => {
-        let newBoyRow = 2
-        const newBoyCol = col
 
+    function meteor(coordinates) {
+      for (let i = 0; i < coordinates.length - 1; i++) {
+        let newBoyRow = 4
+        const newBoyCol = coordinates[i]
         while (newBoyRow < height && !cells[newBoyRow][newBoyCol].classList.contains('locked')) {
           newBoyRow++
         }
-        newBoyRow++
         // because sometimes it still goes over
-        if (!newBoyRow < height) {
+        if (!newBoyRow < height || cells[newBoyRow][newBoyCol].classList.contains('locked')) {
           newBoyRow--
         }
-        
-        cells[newBoyRow][newBoyCol].classList.add('locked')
-        
+        cells[newBoyRow][newBoyCol].classList.add('land', 'locked')
         console.log(cells[newBoyRow][newBoyCol])
-      })
+      }
+      sfxCrash.play()
       if (g === '.grid') {
-        player1Screen.classList.add('tremble')
+        player1Screen.classList.add('crash')
         setTimeout(() => {
-          g.classList.remove('tremble')
-        }, 1100)
+          player1Screen.classList.remove('crash')
+        }, 1300)
       } else {
-        player2Screen.classList.add('tremble')
+        player2Screen.classList.add('crash')
         setTimeout(() => {
-          g.classList.remove('tremble')
-        }, 1100)
+          player2Screen.classList.remove('crash')
+        }, 1300)
       }
     }
+      
   
 
     // drop function
@@ -755,13 +799,16 @@ function init() {
     }
 
     function blockLanded() {
+      sfxLand.play()
       scoreIncrease(800 + (Math.floor(Math.random() * 300)))
       clearInterval(dropId)
       state = 0
       tetrominoPos.map(pos => {
         cells[pos.row][pos.col].classList.add('land')
+        cells[pos.row][pos.col].classList.remove(currentColor)
         lockClass(pos)
       })
+      // generateColor()
       lineStrike()
       !(tetrominoPos.some(sq => sq.row < 4)) ? createTetrominos() : gameOver()
     }
@@ -777,6 +824,7 @@ function init() {
     function lineBreak(index) {
     // console.log(index)gives one number eg 19 at base
       score.textContent = Number(score.textContent) + 10000
+      sfxDrop.play()
       // find all locked squares
       cells[index].map(sq =>  {
         sq.classList.add('cleared')

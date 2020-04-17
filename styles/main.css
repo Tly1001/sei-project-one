@@ -451,7 +451,7 @@ p {
 
 .occupied {
   border: 2px solid rgb(0, 0, 0);
-  background-color: blue;
+  background-color: #42f5ad;
   opacity: 1;
 }
 
@@ -587,56 +587,56 @@ p {
 @keyframes landed {
   0% {
     transform: rotate(0);
-    background: blue;
+    background: lightblue;
     box-shadow: 0 0 0 px dodgerblue;
     ;
   }
 
   10% {
     transform: rotate(0);
-    background: blue;
+    background: lightblue;
     box-shadow: 0 0 10px 10px dodgerblue;
     ;
   }
 
   19% {
     transform: rotate(0);
-    background: blue;
+    background: lightblue;
     box-shadow: 0 0 30px 10px dodgerblue;
     ;
   }
 
   29% {
     transform: rotate(0);
-    background: blue;
+    background: lightblue;
     box-shadow: 0 0 60px 20px dodgerblue;
     ;
   }
 
   38% {
     transform: rotate(0);
-    background: blue;
+    background: lightblue;
     box-shadow: 0 0 80px 30px dodgerblue;
     ;
   }
 
   46% {
     transform: rotate(0);
-    background: blue;
+    background: lightblue;
     box-shadow: 0 0 100px 40px rgb(104, 145, 212);
     ;
   }
 
   55% {
     transform: rotate(0);
-    background: blue;
+    background: lightblue;
     box-shadow: 0 0 120px 40px grey;
     ;
   }
 
   67% {
     transform: rotate(0);
-    background: blue;
+    background: lightblue;
     box-shadow: 0 0 160px 50px grey;
     ;
   }
@@ -765,7 +765,7 @@ p {
       }
   65%{
       transform: rotate(0);
-      background: #093ddb;
+      background: #cc0213;
       }
   75%{
       transform: rotate(0);
@@ -855,3 +855,27 @@ p {
     opacity: 1;
   }
 }
+
+.color1 {
+  background-color: #04bfd4;
+}
+
+.color2 {
+  background-color: #cc0213;
+}
+.color3 {
+  background-color: #ff7512;
+}
+.color4 {
+  background-color: #f5da42 ;
+}
+.color5 {
+  background-color: #42f5ad;
+}
+.color6 {
+  background-color: #d152eb;
+}
+.color7 {
+  background-color: #0249cc;
+}
+
