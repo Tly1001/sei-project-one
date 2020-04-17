@@ -129,7 +129,7 @@ function init() {
         vid.addEventListener('mouseout', function(event) {
           event.target.pause()
         })
-      }, 1000)
+      }, 500)
       vid.addEventListener('click', gameInitiate)
       // doesn't work yet
       // video.setAttribute('src', event.target.value)
