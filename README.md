@@ -32,6 +32,12 @@ The tetrominos rotate based on each squares' current position. Using a forEach t
 
 possible future additions:
 
+start menu to click to start sound files.
+ghost drop
+2 player win state
+play again
+revert to menu during game
+
 
 Credits:
 
