@@ -129,7 +129,7 @@ function init() {
         vid.addEventListener('mouseout', function(event) {
           event.target.pause()
         })
-      }, 300)
+      }, 1000)
       vid.addEventListener('click', gameInitiate)
       // doesn't work yet
       // video.setAttribute('src', event.target.value)
@@ -165,8 +165,10 @@ function init() {
   }
 
   function setSFX() {
-    audio.volume = sfx.value / 100
-    // sfxCon3.play()
+    audio.forEach(sound => {
+      sound.volume = sfx.value / 100
+    })
+    sfxCon3.play()
   }
   
   function setBrightness() {

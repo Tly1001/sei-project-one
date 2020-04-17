@@ -5,6 +5,9 @@ Drag the folder into the overall project folder before starting the game.
 asset link:
 https://drive.google.com/open?id=1XKaw-6cVL3FneaY3AzG-USC65x4m7DjC
 
+To change the game song uncomment the current video in the index.html,
+then uncomment one of the other videos.
+
 This is my first project in General Assembly written with HTML and Javascript.
 
 I was apprehensive at first to take tetris as it was supposedly one of the most difficult in terms of technicality. However, I am very glad I did now.
@@ -32,11 +35,14 @@ The tetrominos rotate based on each squares' current position. Using a forEach t
 
 possible future additions:
 
+working song choice
 start menu to click to start sound files.
 ghost drop
 2 player win state
 play again
 revert to menu during game
+back button glitch
+ambient menu soundtrack
 
 
 Credits:
