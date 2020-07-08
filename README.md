@@ -40,15 +40,25 @@ I was apprehensive at first to take tetris as it was supposedly one of the most 
 
 <img src="https://media.giphy.com/media/fwWG9845x1Slk0i8DZ/giphy.gif">
 
-## Line clearing and 2 player attack
+### Line clearing and 2 player attack
 
 <img src="https://media.giphy.com/media/LSv9iQ3LzZwZmIwoPL/giphy.gif">
 
-## Game over
+<img src="https://j.gifs.com/oVr2BL.gif">
 
-<img src="https://media.giphy.com/media/LSv9iQ3LzZwZmIwoPL/giphy.mp4">
 
-<!-- Grid system -->
+### Game over
+
+![Imgur](https://imgur.com/5RaeGsP.png)
+
+<img src="https://j.gifs.com/wVDplm.gif">
+
+<img src="https://youtu.be/zFiI0tc0x50">
+
+## Process
+
+### Grid System
+
 The grid is consisted of 20 arrays (y-axis), each with an array of 10 (x-axis). This makes it a 20 x 10 of 200 cells, each with their own datasets of positions.
 
 The grid is made with a nested for loop pushing and appending into the grid.
