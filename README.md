@@ -1,5 +1,5 @@
-# sei-project-one tetris
-
+# ![](https://ga-dash.s3.amazonaws.com/production/assets/logo-9f88ae6c9c3871690e33280fcf557f33.png) General Assembly Project #1: Tetris
+      
 Drag the folder into the overall project folder before starting the game.
 
 asset link:
@@ -8,9 +8,36 @@ https://drive.google.com/open?id=1XKaw-6cVL3FneaY3AzG-USC65x4m7DjC
 To change the game song uncomment the current video in the index.html,
 then uncomment one of the other videos.
 
-This is my first project in General Assembly written with HTML/CSS and vanilla Javascript.
+The first project is to **a grid based game** using **HTML/CSS and vanilla Javascript**.
 
-I was apprehensive at first to take tetris as it was supposedly one of the most difficult in terms of technicality. However, I am very glad I did now.
+### Technical Requirements
+
+Brief:
+
+* Time given - 8 days.
+* Written in HTML/CSS and vanilla Javascript.
+* Create a div grid-based game.
+* Display a game in the browser.
+* Design logic for win and lose state.
+
+---
+
+## Concept
+
+I was apprehensive at first to take tetris as it was supposedly one of the most difficult in terms of technicality. However, I am very glad I did now. I chose tetris and based the asthetic design on the recently released 'Tetris effect', using background music, visuals and effects to elevate actions as well as give it a real videogame like feel.
+
+## Technologies Used
+
+* HTML
+* CSS
+* JavaScript
+
+---
+
+## Walk-Through
+
+### Home menu
+
 
 <!-- Grid system -->
 The grid is consisted of 20 arrays (y-axis), each with an array of 10 (x-axis). This makes it a 20 x 10 of 200 cells, each with their own datasets of positions.
@@ -311,8 +338,8 @@ There were a lot of wins with this project, I am particularly happy with the des
 ## Bugs
 
 * Song choices shows three possibilities but plays the same song.
-* Menu page does not initially have audio.
-* Background video stops after finished.
+* No audio on the main menu page until the window is clicked.
+* Background video stops after finished but game continues.
 * Back button animation glitches.
 
 ---
