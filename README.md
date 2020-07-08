@@ -38,7 +38,7 @@ I was apprehensive at first to take tetris as it was supposedly one of the most 
 
 ### Home menu
 
-<img src="https://.imgur.com/smoOGRT.mp4">
+<img src="https://media.giphy.com/media/fwWG9845x1Slk0i8DZ/source.gif">
 
 <img src="https://media.imgflip.com/embed/47mtu1.gif">
 
