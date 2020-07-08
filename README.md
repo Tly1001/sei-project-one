@@ -38,22 +38,15 @@ I was apprehensive at first to take tetris as it was supposedly one of the most 
 
 ### Home menu
 
-<img src="https://media.giphy.com/media/fwWG9845x1Slk0i8DZ/giphy.gif">
+[![Menu video link](https://media.giphy.com/media/fwWG9845x1Slk0i8DZ/giphy.gif)](https://youtu.be/zFiI0tc0x50)
 
 ### Line clearing and 2 player attack
 
-<img src="https://media.giphy.com/media/LSv9iQ3LzZwZmIwoPL/giphy.gif">
-
-<img src="https://j.gifs.com/oVr2BL.gif">
-
+[![2 Player line clearing video link](https://media.giphy.com/media/LSv9iQ3LzZwZmIwoPL/giphy.gif)](https://youtu.be/1xcTOMM-7GU)
 
 ### Game over
 
-![Imgur](https://imgur.com/5RaeGsP.png)
-
-<img src="https://j.gifs.com/wVDplm.gif">
-
-<img src="https://youtu.be/zFiI0tc0x50">
+[![Game over video link](https://media.giphy.com/media/LSv9iQ3LzZwZmIwoPL/giphy.gif)](https://youtu.be/1NtJxeO-OPA)
 
 ## Process
 
