@@ -38,7 +38,10 @@ I was apprehensive at first to take tetris as it was supposedly one of the most 
 
 ### Home menu
 
-<img src="https://i.imgur.com/Fn6DFKG.gif">
+<img src="https://imgur.com/smoOGRT.gif">
+
+<img src="https://imgflip.com/embed/47mtu1.gif">
+
 
 <!-- Grid system -->
 The grid is consisted of 20 arrays (y-axis), each with an array of 10 (x-axis). This makes it a 20 x 10 of 200 cells, each with their own datasets of positions.
