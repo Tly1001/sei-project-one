@@ -38,9 +38,9 @@ I was apprehensive at first to take tetris as it was supposedly one of the most 
 
 ### Home menu
 
-<img src="https://imgur.com/smoOGRT.gif">
+<img src="https://.imgur.com/smoOGRT.mp4">
 
-<img src="https://imgflip.com/embed/47mtu1.gif">
+<img src="https://media.imgflip.com/embed/47mtu1.gif">
 
 
 <!-- Grid system -->
