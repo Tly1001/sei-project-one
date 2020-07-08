@@ -38,6 +38,7 @@ I was apprehensive at first to take tetris as it was supposedly one of the most 
 
 ### Home menu
 
+<img src="https://i.imgur.com/Fn6DFKG.gif">
 
 <!-- Grid system -->
 The grid is consisted of 20 arrays (y-axis), each with an array of 10 (x-axis). This makes it a 20 x 10 of 200 cells, each with their own datasets of positions.
@@ -61,7 +62,8 @@ function createGrid() {
     }
 ```
 
-<!-- Tetrominos -->
+### Tetrominos
+
 The tetrominos are first made by getting a random shape of the 7, then pushing each starting position for every individual square into an array, this array represents the current shape as a whole.
 
 ```
@@ -79,7 +81,8 @@ The tetrominos are first made by getting a random shape of the 7, then pushing e
       lineCheck()
     }
 ```
-Shape example
+
+### Shape example
 
 ```
       [{
@@ -127,6 +130,30 @@ Shape example
       }],
 ```
 <!-- Movement -->
+## Movement
+
+In general most the movement works in three steps:
+
+**Remove:** Makes the tetromino invisible.
+
+**Change:** Moves the coordinates of the tetromino and checks if it is a viable placement.
+
+**Replace:** The tetrominos reappear in their new cooridinates.
+
+Each shape's coordinates are changed individually. Checks are put in place for collision of each square, subsequently moving the shape as a whole if conditions are met.  
+
+### Wall detection
+
+For left and right movement I had to make checks for each tetromeno square the walls. If they were out of the valid range, it would move the blocks back to thier original position making it seem as if nothing happened.
+
+
+```
+    function rightWallCollisionDectect() {
+        while (tetrominoPos.some(val => val.col > 9) && tetrominoPos.some(val => val.col > 8)) {
+          tetrominoPos.map(pos => pos.col--)
+        }
+      }
+```
 
 ```
 // right
@@ -143,35 +170,20 @@ Shape example
           break
 ```
 
+### Rotation
+
+The tetrominos rotate based on each squares' current position. Using a for loop to relocate each and every singular block to where they are supposed to be in relation to the rotation and shape.
+
 ```
-// down
-        case keys[3]:
-          removeAll()
-          tetrominoPos.map(pos => pos.row++)
-          if (!tetrominoPos.every(val => val.row < height) || tetrominoPos.some(val => cells[val.row][val.col].classList.contains('locked'))) {
-            tetrominoPos.map(pos => pos.row--)
-            blockLanded()
-          }
-          replaceAll()
-          break
-        // drop
-        case keys[4]:
-        // unrespond state
-          removeAll()
-          while (tetrominoPos.every(val => val.row < height) && !tetrominoPos.some(val => cells[val.row][val.col].classList.contains('locked'))) {
-            tetrominoPos.map(pos => pos.row++)
-          }
-          tetrominoPos.map(pos => pos.row -= 1)
-          // because sometimes it still goes over
-          if (!tetrominoPos.every(val => val.row < height)) {
-            tetrominoPos.map(pos => pos.row -= 1)
-          }
-          replaceAll()
-          blockLanded()
-          break
+function rotate() {
+        for (let i = 0; i <= 3; i++) {
+        // console.log(jTet.rotate[state]) gives 4 arrays, each with 4 arrays nested within them
+          tetrominoPos[i].row += tet[0].rotate[state][i][0]
+          tetrominoPos[i].col += tet[0].rotate[state][i][1]
+          tet[0].rotate[state][i][1]
+        }
+      }
 ```
-<!-- Rotation -->
-The tetrominos rotate based on each squares' current position. Using a forEach to relocate each and every singular block to where they are supposed to be in relation to the rotation and shape.
 
 ```
 // up/rotate
@@ -196,17 +208,9 @@ case keys[1]:
           break
 ```
 
-<!-- Wall collision -->
+### Falling and collision detection
 
-```
-    function rightWallCollisionDectect() {
-        while (tetrominoPos.some(val => val.col > 9) && tetrominoPos.some(val => val.col > 8)) {
-          tetrominoPos.map(pos => pos.col--)
-        }
-      }
-```
-
-<!-- line drop and collision detection -->
+Falling is initiated the moment a tetormino is created. The speed is slow at first, increasing with every 3 line clearing. The drop constantly checks whether there is a frozen block or the base of the grid underneath. Wthe that happens, it checks for line clearing and creates a new tetromino at the top. As well as that it also checks if there are any frozen blocks past a certain height on the grid, setting the lose state.
 
 ```
 function drop() {
@@ -244,7 +248,31 @@ function blockLanded() {
     }
 ```
 
-<!-- Line Clearing -->
+### Instant dropping
+
+Instant dropping works like regular drops, but it keeps moving the tetromino down until one square hits a frozen block or the base of the grid.
+
+```
+// drop
+        case keys[4]:
+        // unrespond state
+          removeAll()
+          while (tetrominoPos.every(val => val.row < height) && !tetrominoPos.some(val => cells[val.row][val.col].classList.contains('locked'))) {
+            tetrominoPos.map(pos => pos.row++)
+          }
+          tetrominoPos.map(pos => pos.row -= 1)
+          // because sometimes it still goes over
+          if (!tetrominoPos.every(val => val.row < height)) {
+            tetrominoPos.map(pos => pos.row -= 1)
+          }
+          replaceAll()
+          blockLanded()
+          break
+```
+
+### Line clearing
+
+Line clearing is called every time a new tetromino is create. It searches all the locked tetrominos and cross-references their coordinates to see if a 10 in the same row exist. If this is true, an animation is triggered, the line is removed and all the frozen squares above it on the grid are dropped down 1 collumn.
 
 ```
 function lineCheck() {
@@ -300,7 +328,9 @@ function lineCheck() {
     }
 ```
 
-<!-- 2 Player -->
+### 2 Player
+
+2 player works very simply, at the stage selection the user picks either 1 or 2 player, setting a variable. When the game starts it checks that variable and initiates either a single game grid, or 2 game grids and styles them to fit on the screen. They work separately, but share some variables such as when one line is cleared, the other player gets 5 random squares dropped into their grid.
 
 ```
 function stageSelect(event) {
@@ -320,6 +350,60 @@ function stageSelect(event) {
       backIntro()
     }, 900)
   }
+```
+
+Adding additional squares to other player.
+
+```
+function lineStrike() {
+      if (players === 2) {
+        if (g === '.grid' && meteors === 2) {
+          const strikeTeam2 = []
+          for (let i = 0; i < 6; i++) {
+            strikeTeam2.push(Math.floor(Math.random() * 9))
+          } 
+          meteors = 0
+          meteor(strikeTeam2)
+        } 
+        if (g === '.grid2' && meteors === 1) {
+          const strikeTeam1 = []
+          for (let i = 0; i < 6; i++) {
+            strikeTeam1.push(Math.floor(Math.random() * 9))
+          } 
+          meteors = 0
+          meteor(strikeTeam1)
+        }
+      }
+    }
+
+    function meteor(coordinates) {
+      for (let i = 0; i < coordinates.length - 1; i++) {
+        let newBoyRow = 4
+        const newBoyCol = coordinates[i]
+        while (newBoyRow < height && !cells[newBoyRow][newBoyCol].classList.contains('locked')) {
+          newBoyRow++
+        }
+        // because sometimes it still goes over
+        if (!newBoyRow < height || cells[newBoyRow][newBoyCol].classList.contains('locked')) {
+          newBoyRow--
+        }
+        cells[newBoyRow][newBoyCol].classList.add('land', 'locked')
+        console.log(cells[newBoyRow][newBoyCol])
+      }
+      sfxCrash.play()
+      if (g === '.grid') {
+        player1Screen.classList.add('crash')
+        setTimeout(() => {
+          player1Screen.classList.remove('crash')
+        }, 1300)
+      } else {
+        player2Screen.classList.add('crash')
+        setTimeout(() => {
+          player2Screen.classList.remove('crash')
+        }, 1300)
+      }
+    }
+
 ```
 
 
