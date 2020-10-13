@@ -5,12 +5,6 @@ Drag the folder into the overall project folder before starting the game.
 deployed link:
 https://tetrisproject.netlify.app/
 
-asset link:
-https://drive.google.com/open?id=1XKaw-6cVL3FneaY3AzG-USC65x4m7DjC
-
-To change the game song uncomment the current video in the index.html,
-then uncomment one of the other videos.
-
 The first project is to **a grid based game** using **HTML/CSS and vanilla Javascript**.
 
 ### Technical Requirements
