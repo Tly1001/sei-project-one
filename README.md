@@ -2,6 +2,9 @@
       
 Drag the folder into the overall project folder before starting the game.
 
+deployed link:
+https://tetrisproject.netlify.app/
+
 asset link:
 https://drive.google.com/open?id=1XKaw-6cVL3FneaY3AzG-USC65x4m7DjC
 
